@@ -44,3 +44,35 @@ and signatures are Ostraka's byte for byte.
 | Transport | httpx, async | requests, sync, on a thread | httpx, sync, on a thread | Standard library (sync) or httpx (async, `samarkand[async]`) | Shikari no longer needs requests for webhooks |
 | Error text | `str(exc)[:200]` or the exception's name | `str(e)[:200]` (empty for some errors) | `str(exc)[:200]` | As Ostraka | Shikari: an error with no message records its type rather than "" |
 | `events_problem` message | "Choose events from a, b." | "Choose events from a, b" | "Choose events from a, b" | As Ostraka, with the product's events passed in | Punctuation only |
+
+## STIX
+
+Reading follows Rowanholt (each value with its own linked groups and techniques); building follows
+Ostraka (hand-written JSON, stable ids, TLP 2.0 markings). `tests/test_stix.py` turns samarkand's
+output into Rowanholt's ten-column rows and Shikari's extraction shape (`tests/adapters.py`) and
+compares them with what each product's own parser gives for every fixture: Rowanholt's rows and
+validity are identical for all five fixtures, and Shikari's extraction is identical but for the
+escaped values below. Ostraka's cyber observables, patterns, TLP markings, identity,
+attack-patterns, indicators and relationships rebuild byte for byte.
+
+| What | Ostraka | Shikari | Rowanholt | samarkand | Switching changes |
+|---|---|---|---|---|---|
+| Escapes in pattern strings (`'it\'s.exe'`, `'HKLM\\Run'`) | Writes them (`exports/stix.py` `_quote`) | Not understood: `'([^']*)'` (`parsers/stix_import.py:20`) stops at an escaped quote and leaves `\\` doubled | Undone (`threat_intel/stix.py:29`, then `\'` and `\\` replaced) | As Rowanholt | Shikari: `it\'s.exe` reads as `it's.exe` rather than `it\`, and `C:\\Users` as `C:\Users` (Ostraka's own bundles carry such paths) |
+| Objects without an `id` | Never writes one | Read (its tests' bundles have none) | Skipped: `by_id` keeps only objects with ids (`threat_intel/stix.py:127`) | Read, with `object_id` "" so a product can skip them, as `tests/adapters.py` does for Rowanholt | None, if Rowanholt's adapter skips them as now. Without that, Rowanholt would gain rows from id-less objects |
+| Two objects with one id (a newer version) | Never writes one | Both read | The last read, in the first's place (dict order) | As Rowanholt | Shikari: an IOC that only the older version had is no longer read |
+| Which techniques | Each indicator names its own through `indicates` | Every attack-pattern in the bundle, plus T-numbers in indicator names (`stix_import.py:120`) | Each value's own, through `indicates`, `related-to` or `uses`; else a T-number in its name | Both: `Parsed.techniques` (every attack-pattern) and `Indicator.techniques` (linked) and `named_techniques` | None; each product picks the one it uses today |
+| `confidence` | Writes 15 or 85 | Not read | 0 to 100, but `True` counts as 1 (`threat_intel/stix.py:116`) | 0 to 100, booleans refused | Rowanholt: `"confidence": true` is no confidence, not 1 |
+| Timestamps | Writes `YYYY-MM-DDTHH:MM:SS.mmmZ` | Not read | `datetime.fromisoformat` after replacing Z (`threat_intel/validity.py:46`), which on Python 3.10 refuses fractions that aren't 3 or 6 digits | `parse_time`, any number of fractional digits, the same on 3.10 to 3.12; aware UTC (Rowanholt's adapter drops the zone, as it stores naive UTC) | Rowanholt: `.12Z` or nanosecond times read on 3.10 too |
+| Export | Hand-written; deterministic ids; TLP 2.0 marking on every object; `identity_class` organization | `stix2` library (`parsers/stix_export.py:107`); random ids; no markings; `identity_class` system (`:57`); one indicator ORing up to five IOCs per kind, IPs always `ipv4-addr`, hashes always `SHA-256` (`:20`, `:43`); a custom `x-shikari-detection` per detection | No export | Ostraka's object builders (`identity_object`, `attack_pattern_object`, `indicator_object`, `relationship_object`, `cyber_observables`, `tlp_marking`) and a neutral `bundle()` (one indicator per value, its real observable type, `indicates` relationships, a report) | Shikari: drops the `stix2` dependency; its bundles gain markings, stable ids, one indicator per IOC and correct IPv6 and hash types. `x-shikari-detection` objects stay Shikari's own, added to the objects list |
+| A process's command line | An SCO with an id under Ostraka's namespace | `process:command_line` pattern | Read | The pattern always; the SCO only when the caller passes its namespace (process has no ID contributing properties, so the spec gives no id) | None for Ostraka, which passes its namespace |
+
+## TAXII
+
+| What | Ostraka | Shikari | Rowanholt | samarkand | Switching changes |
+|---|---|---|---|---|---|
+| Transport | No TAXII client | requests (`parsers/taxii_client.py:35`) | urllib (`threat_intel/stix.py:186`) | urllib, the request URLs Rowanholt's makes (`objects/?limit=…&added_after=…&next=…`) | Shikari no longer needs requests here |
+| Redirects | | Followed, with the Basic auth header | Followed (urllib's default) | Not followed: credentials go only to the URL given | A server that redirects (http to https, say) needs its final URL configured |
+| Errors | | `requests.HTTPError` from `raise_for_status` (`:36`) | `urllib.error.HTTPError` | `TaxiiProblem`, with a message for the admin (credentials refused, HTTP status, not JSON, unreachable) | Each product catches `TaxiiProblem` |
+| Collection URL for `collection_info` | | Without its trailing slash (`:49`) | No `collection_info` | With it, as TAXII 2.1 writes collection URLs | Servers that are strict about the slash answer |
+| User-Agent | | `Shikari (TAXII 2.1 client)` | `Rowanholt (TAXII 2.1 client)` (`threat_intel/stix.py:176`) | `TAXII 2.1 client`; `user_agent=` sets the product's | Pass the old string to keep it |
+| TLS verification | | requests' default (on) | On | On; `verify=False` for one request | None |
