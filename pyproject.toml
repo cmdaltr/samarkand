@@ -45,4 +45,4 @@ ignore = ["S101"]
 
 [tool.ruff.lint.per-file-ignores]
 # Test vectors use fixed throwaway secrets
-"tests/**" = ["S105", "S106"]
+"tests/**" = ["S105", "S106", "S107"]
