@@ -76,3 +76,23 @@ attack-patterns, indicators and relationships rebuild byte for byte.
 | Collection URL for `collection_info` | | Without its trailing slash (`:49`) | No `collection_info` | With it, as TAXII 2.1 writes collection URLs | Servers that are strict about the slash answer |
 | User-Agent | | `Shikari (TAXII 2.1 client)` | `Rowanholt (TAXII 2.1 client)` (`threat_intel/stix.py:176`) | `TAXII 2.1 client`; `user_agent=` sets the product's | Pass the old string to keep it |
 | TLS verification | | requests' default (on) | On | On; `verify=False` for one request | None |
+
+## MISP
+
+Reading follows Shikari's importer; building follows the event shape Shikari's exporter and
+Ostraka's share. `tests/test_misp.py` turns samarkand's reading into Shikari's extraction shape for
+all four fixtures (Shikari's own, Shikari's exported run, Ostraka's exported event and an edge-case
+event) and gets exactly what `parse_misp_event` gives; Ostraka's exported event rebuilds byte for
+byte; Shikari's exported run rebuilds with the same content and two keys in another order.
+
+| What | Ostraka | Shikari | Rowanholt | samarkand | Switching changes |
+|---|---|---|---|---|---|
+| Key order in an event | `uuid, info, date, threat_level_id, analysis, distribution, published, timestamp` (`exports/misp.py:178`) | `info, date, analysis, threat_level_id, distribution` (`parsers/misp_export.py:91`) | No MISP | As Ostraka; optional keys left out when not given | Shikari: `threat_level_id` and `analysis` swap places. JSON key order means nothing to MISP |
+| Event uuid | From the incident (UUIDv5), so a second push updates | None: MISP makes one, and every export is a new event | | Given by the caller, or left out | None; Shikari can start passing one to make pushes update |
+| Category of a file name | Artifacts dropped (`exports/misp.py:53`) | Payload delivery (`parsers/misp_export.py:23`) | | `ATTRIBUTE_TYPES` is Ostraka's table (Artifacts dropped); `Attribute` takes any category | None if Shikari keeps building its attributes with its own categories, as the test's `shikari_run` does |
+| SHA-512 | No such kind | `hash_type` by length, 128 gives sha512 | | Both: `Kind.FILE_HASH_SHA512` and `hash_type` | None |
+| TLP | A `tlp:` tag first (`exports/misp.py:155`) | No TLP tag | | `tlp=` adds `tlp:<level>` first; `ParsedEvent.tlp` reads it | Shikari gains a TLP tag only if it passes one |
+| Threat actor | None | A `threat-actor` galaxy and tag | | `threat_actor=`, Shikari's shape | None |
+| Composite attributes | Never writes one | Split only when both type and value contain `|` (`parsers/misp_import.py:51`) | | The same; both halves in `ParsedAttribute.parts` with their kinds | None |
+| Empty values | | Skipped | | Skipped | None |
+| Push | Async httpx: GET `/events/view/<uuid>`, then `/events/edit/<uuid>` or `/events/add` (`exports/misp.py:230`) | Pulls only (`/events/restSearch`) | | Ostraka's add-or-update, sync (stdlib) and async (httpx); an event without a uuid is always added; `events_of` reads a restSearch answer as Shikari does | Ostraka catches `samarkand.misp.MispProblem` instead of its own; its User-Agent becomes `samarkand-misp/1` unless it passes `ostraka-misp/1` |
