@@ -1,0 +1,55 @@
+# A v* tag publishes to PyPI with Trusted Publishing: PyPI trusts this workflow in this repo, so
+# there's no token or secret anywhere. On PyPI, the publisher is owner cmdaltr, repository
+# samarkand, workflow release.yml, environment pypi.
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: The tag matches the version
+        run: |
+          version=$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml', 'rb'))['project']['version'])")
+          package=$(python -c "import re; print(re.search(r'__version__ = \"(.+)\"', open('src/samarkand/__init__.py').read())[1])")
+          tag="${GITHUB_REF_NAME#v}"
+          if [ "$tag" != "$version" ] || [ "$tag" != "$package" ]; then
+            echo "Tag $GITHUB_REF_NAME, pyproject.toml $version and __version__ $package must agree" >&2
+            exit 1
+          fi
+      - name: Test
+        run: |
+          python -m pip install -e ".[dev]"
+          ruff check .
+          pytest -q
+      - name: Build
+        run: |
+          python -m pip install build
+          python -m build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1

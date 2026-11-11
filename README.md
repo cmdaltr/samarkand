@@ -149,6 +149,18 @@ python3 -m venv .venv
 
 CI (`.github/workflows/test.yml`) runs the same on Python 3.10, 3.11 and 3.12.
 
+## Releasing
+
+Set the version in `pyproject.toml` and `src/samarkand/__init__.py`, commit, then tag and push:
+
+```bash
+git tag v0.1.0 && git push origin v0.1.0
+```
+
+`.github/workflows/release.yml` checks the tag matches both versions, runs the tests, builds, and
+publishes to PyPI through Trusted Publishing: no token is stored anywhere. Products pin an exact
+version (`samarkand==0.1.0`).
+
 ## Licence
 
 Elastic License 2.0 (`LICENSE`); the licensor is Ben Smith (cmdaltr).
