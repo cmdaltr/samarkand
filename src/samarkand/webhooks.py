@@ -2,12 +2,12 @@
 
 A delivery is a POST of `{"event", "sent_at", "data"}` as JSON, with `<prefix>-Event` naming the event
 and, when the webhook has a secret, `<prefix>-Signature: sha256=<hex HMAC-SHA256 of the raw body>`.
-The product passes its prefix (`X-Ostraka`), its event names and its data, already masked by its own
+The product passes its prefix (`X-Acme`), its event names and its data, already masked by its own
 rules for anything leaving it. Nothing else is signed: there's no timestamp or delivery id in the
 signature, so a receiver must make acting on a delivery harmless to repeat.
 
 `sent_at` is ISO 8601 in UTC (`2026-11-11T12:00:00+00:00`). A receiver also accepts the epoch
-seconds Shikari and Rowanholt sent before samarkand (`Delivery.sent_at_time`).
+seconds some products sent before samarkand (`Delivery.sent_at_time`).
 
 The URL rules are the strictest the products agree on: https anywhere; plain http only to this
 machine (localhost, *.localhost, loopback) or an RFC 1918 address, where a receiver often has no
@@ -59,15 +59,15 @@ class Headers(NamedTuple):
 
 
 def headers_for(prefix: str) -> Headers:
-    """The header names for a prefix: "X-Shikari" gives ("X-Shikari-Event", "X-Shikari-Signature")."""
+    """The header names for a prefix: "X-Acme" gives ("X-Acme-Event", "X-Acme-Signature")."""
     prefix = prefix.strip().rstrip("-")
     if not prefix:
-        raise ValueError("A header prefix such as X-Ostraka is needed.")
+        raise ValueError("A header prefix such as X-Acme is needed.")
     return Headers(f"{prefix}-Event", f"{prefix}-Signature")
 
 
 def user_agent_for(prefix: str) -> str:
-    """The default User-Agent for a prefix: "X-Ostraka" gives "Ostraka-Webhook/1"."""
+    """The default User-Agent for a prefix: "X-Acme" gives "Acme-Webhook/1"."""
     name = prefix.strip().rstrip("-")
     name = name[2:] if name.lower().startswith("x-") else name
     return f"{name}-Webhook/1"

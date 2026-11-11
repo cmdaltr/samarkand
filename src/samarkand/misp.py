@@ -1,6 +1,6 @@
 """MISP events as plain JSON, without PyMISP: reading one, building one, and pushing it to an instance.
 
-The shapes are the ones Shikari's exporter and importer agree on (and Ostraka's exporter follows):
+The shapes are the ones the products' exporters and importers already agree on:
 ATT&CK techniques as `mitre-attack-pattern` galaxy clusters with `meta.external_id`, plus a
 `misp-galaxy:mitre-attack-pattern="Name - T1234"` tag so simple parsers find them too; a group as a
 `threat-actor` cluster and tag; the TLP as a `tlp:` tag from MISP's TLP 2.0 taxonomy.
@@ -33,7 +33,7 @@ ACTOR_TAG = 'misp-galaxy:threat-actor="{}"'
 DISTRIBUTIONS = {0: "Your organisation only", 1: "This community only", 2: "Connected communities", 3: "All"}
 COMMENT_LIMIT = 1000
 
-# Kind -> (MISP attribute type, category), Ostraka's table. A kind not here has no faithful MISP type.
+# Kind -> (MISP attribute type, category). A kind not here has no faithful MISP type.
 ATTRIBUTE_TYPES: dict[Kind, tuple[str, str]] = {
     Kind.IP_ADDRESS: ("ip-dst", "Network activity"),
     Kind.CIDR: ("ip-dst", "Network activity"),
@@ -155,7 +155,7 @@ class Attribute:
 
 
 def hash_type(value: str) -> str:
-    """md5, sha1, sha256 or sha512 by a hex digest's length; sha256 for anything else (Shikari's rule)."""
+    """md5, sha1, sha256 or sha512 by a hex digest's length; sha256 for anything else."""
     v = value.strip()
     if v and all(c in "0123456789abcdefABCDEF" for c in v):
         return _HASH_TYPES.get(len(v), "sha256")

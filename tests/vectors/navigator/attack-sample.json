@@ -1,0 +1,108 @@
+{
+  "about": "Written for samarkand: the parts of ATT&CK's STIX data release_of reads, with a revoked and a deprecated technique whose platforms mustn't count.",
+  "bundle": {
+    "type": "bundle",
+    "id": "bundle--sample",
+    "objects": [
+      {
+        "type": "x-mitre-collection",
+        "id": "x-mitre-collection--1f5f1533-f617-4ca8-9ab4-6a02367fa019",
+        "name": "Enterprise ATT&CK",
+        "x_mitre_version": "20.1"
+      },
+      {
+        "type": "attack-pattern",
+        "id": "attack-pattern--1",
+        "name": "PowerShell",
+        "x_mitre_domains": [
+          "enterprise-attack"
+        ],
+        "x_mitre_platforms": [
+          "Windows"
+        ],
+        "external_references": [
+          {
+            "source_name": "mitre-attack",
+            "external_id": "T1059.001"
+          }
+        ]
+      },
+      {
+        "type": "attack-pattern",
+        "id": "attack-pattern--2",
+        "name": "Cloud Accounts",
+        "x_mitre_domains": [
+          "enterprise-attack"
+        ],
+        "x_mitre_platforms": [
+          "IaaS",
+          "SaaS",
+          "Office Suite",
+          "Identity Provider"
+        ]
+      },
+      {
+        "type": "attack-pattern",
+        "id": "attack-pattern--3",
+        "name": "Unix Shell",
+        "x_mitre_domains": [
+          "enterprise-attack"
+        ],
+        "x_mitre_platforms": [
+          "Linux",
+          "macOS",
+          "ESXi",
+          "Network Devices"
+        ]
+      },
+      {
+        "type": "attack-pattern",
+        "id": "attack-pattern--4",
+        "name": "Old",
+        "revoked": true,
+        "x_mitre_domains": [
+          "enterprise-attack"
+        ],
+        "x_mitre_platforms": [
+          "Azure AD"
+        ]
+      },
+      {
+        "type": "attack-pattern",
+        "id": "attack-pattern--5",
+        "name": "Older",
+        "x_mitre_deprecated": true,
+        "x_mitre_domains": [
+          "enterprise-attack"
+        ],
+        "x_mitre_platforms": [
+          "Google Workspace"
+        ]
+      },
+      {
+        "type": "attack-pattern",
+        "id": "attack-pattern--6",
+        "name": "Containers",
+        "x_mitre_domains": [
+          "enterprise-attack"
+        ],
+        "x_mitre_platforms": [
+          "Containers",
+          "PRE"
+        ]
+      },
+      {
+        "type": "attack-pattern",
+        "id": "attack-pattern--7",
+        "name": "Phone",
+        "x_mitre_domains": [
+          "mobile-attack"
+        ],
+        "x_mitre_platforms": [
+          "Android",
+          "iOS"
+        ]
+      }
+    ]
+  }
+}

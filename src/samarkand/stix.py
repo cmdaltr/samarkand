@@ -4,16 +4,16 @@ Hand-written rather than through the `stix2` library: the objects are few, vendo
 carry custom properties the strict loaders reject, and building dictionaries doesn't need a large
 dependency.
 
-Reading (`parse`) follows Rowanholt's per-indicator model: each value in a bundle comes back as its
+Reading (`parse`) is per indicator: each value in a bundle comes back as its
 own `Indicator` with the groups and techniques its own STIX relationships (`indicates`, `related-to`,
 `uses`) link it to, never every technique in the bundle. Each value keeps the STIX type and property
 it came from, so a product maps it to its own vocabulary; `Kind` is a neutral one to start from.
 
-Building follows Ostraka's exporter: deterministic ids (UUIDv5 under a namespace the product owns,
+Building gives deterministic ids (UUIDv5 under a namespace the product owns,
 and the spec's own SCO namespace over the ID contributing properties), UTC millisecond timestamps,
 and the OASIS TLP 2.0 marking definitions, carried by every object in `object_marking_refs`.
-`bundle` puts a simple bundle together from neutral parts; a product with more to say (Ostraka's
-incidents, notes and sightings) uses the object builders directly.
+`bundle` puts a simple bundle together from neutral parts; a product with more to say (incidents,
+notes, sightings) uses the object builders directly.
 """
 
 from __future__ import annotations
@@ -54,8 +54,8 @@ TLP_CREATED = "2022-10-01T00:00:00.000Z"
 
 
 class Kind(str, Enum):
-    """A neutral vocabulary for indicator values. The values are Ostraka's observable types, so a
-    product with its own maps by value."""
+    """A neutral vocabulary for indicator values. The values match the observable types the products
+    already use, so a product with its own maps by value."""
 
     IP_ADDRESS = "ip_address"
     CIDR = "cidr"

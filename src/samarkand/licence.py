@@ -138,7 +138,7 @@ class Standing:
 
 
 def format_of(product: str) -> str:
-    """The line's prefix for a product: "ostraka" gives "ostraka-licence-1"."""
+    """The line's prefix for a product: "acme" gives "acme-licence-1"."""
     return f"{product}{SUFFIX}"
 
 
@@ -313,7 +313,7 @@ class Rules:
     """One product's licence rules, bound once: its id, its trusted public keys (hex), its free seat
     number and its name as people read it.
 
-        RULES = Rules("ostraka", ("cf9e…",), free_seats=4, name="Ostraka")
+        RULES = Rules("acme", ("cf9e…",), free_seats=4, name="Acme")
         RULES.parse(line); RULES.standing(licence)
     """
 

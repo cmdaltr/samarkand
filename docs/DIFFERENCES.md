@@ -96,3 +96,17 @@ byte; Shikari's exported run rebuilds with the same content and two keys in anot
 | Composite attributes | Never writes one | Split only when both type and value contain `|` (`parsers/misp_import.py:51`) | | The same; both halves in `ParsedAttribute.parts` with their kinds | None |
 | Empty values | | Skipped | | Skipped | None |
 | Push | Async httpx: GET `/events/view/<uuid>`, then `/events/edit/<uuid>` or `/events/add` (`exports/misp.py:230`) | Pulls only (`/events/restSearch`) | | Ostraka's add-or-update, sync (stdlib) and async (httpx); an event without a uuid is always added; `events_of` reads a restSearch answer as Shikari does | Ostraka catches `samarkand.misp.MispProblem` instead of its own; its User-Agent becomes `samarkand-misp/1` unless it passes `ostraka-misp/1` |
+
+## Navigator
+
+`build_layer` is Rowanholt's (`post/mitre/layers.py:45`). Rowanholt's three captured layers and
+Ostraka's two (confirmed only, and with leads) rebuild byte for byte.
+
+| What | Ostraka | Shikari | Rowanholt | samarkand | Switching changes |
+|---|---|---|---|---|---|
+| ATT&CK version | The bundled data's major (`exports/navigator.py` `attack_major`) | Hard-coded `"17"` by default (`assessments/export.py:36`) | The pinned release's major (`attack_lookup.version()`) | `attack_version=` is required and the layer names its major; `release_of` reads it from ATT&CK's STIX data | Shikari: its assessment layer names the ATT&CK version of the bundle it loads, not 17 |
+| Navigator version | 5.3.2 | 4.9.0 (`assessments/export.py:53`) | 5.3.2 | 5.3.2; `navigator_version=` overrides | Shikari's layers say 5.3.2 |
+| Platforms | A hard-coded copy of Rowanholt's list (`exports/navigator.py:36`): Ostraka's bundled ATT&CK data has none | No `filters` | Every platform the domain's techniques name | Passed in; `release_of` gives each domain's from the data, revoked and deprecated techniques left out | Ostraka can read them from data instead of keeping a copy; Shikari's layers gain `filters`, so cloud-only techniques aren't hidden |
+| Links | On every technique and at layer level, `[]` when none (`:115`, `:127`) | None | None | Written only when given (`Mark.links`, `links=`) | None for either: Ostraka passes them, Rowanholt doesn't |
+| Scores | None | `score` per technique with its own gradient (1 to 4) | None | `Mark.score` and `gradient=`, written only when given | Shikari's layers also gain `layout`, `sorting`, `filters`, `metadata` and the other keys Rowanholt's carry |
+| Layer-level `metadata` | TLP, incident, source | None | `[]` | `metadata=`, `[]` by default | None |
