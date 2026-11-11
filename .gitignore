@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Never commit a licence, a signing key or any key. The one exception is the throwaway test seed,
+# which no product trusts.
+*.licence
+*licence-signing*
+*.key
+!tests/vectors/licence/THROWAWAY-TEST-SEED.key
+
+# Editors and the OS
+.DS_Store
+.idea/
+.vscode/

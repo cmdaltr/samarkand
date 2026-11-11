@@ -1,0 +1,97 @@
+{
+  "about": "Written for samarkand: composite types, objects, string tags, a threat actor.",
+  "event": {
+    "Event": {
+      "uuid": "5f0c1b9e-0000-4000-8000-000000000001",
+      "info": "Edge event",
+      "date": "2026-11-01",
+      "Tag": [
+        {
+          "name": "tlp:amber+strict"
+        },
+        {
+          "name": "misp-galaxy:threat-actor=\"FIN7\""
+        },
+        "mitre-attack:T1110"
+      ],
+      "Attribute": [
+        {
+          "type": "url",
+          "value": "https://user@evil.example:8443/gate",
+          "category": "Network activity",
+          "to_ids": true
+        },
+        {
+          "type": "domain|ip",
+          "value": "evil.example|203.0.113.7"
+        },
+        {
+          "type": "regkey|value",
+          "value": "HKLM\\Run|evil.exe"
+        },
+        {
+          "type": "hostname",
+          "value": "c2.evil.example"
+        },
+        {
+          "type": "ssdeep",
+          "value": "3:AXGBicFlgVNhBGcL6wCrFQEv:AXGHsNhxLsr2C"
+        },
+        {
+          "type": "command",
+          "value": "whoami /all"
+        },
+        {
+          "type": "mutex",
+          "value": "Global\\x"
+        },
+        {
+          "type": "text",
+          "value": "ignored"
+        },
+        {
+          "type": "ip-src",
+          "value": ""
+        }
+      ],
+      "Object": [
+        {
+          "name": "file",
+          "Attribute": [
+            {
+              "type": "filename",
+              "value": "drop.dll"
+            },
+            {
+              "type": "sha1",
+              "value": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+            }
+          ]
+        }
+      ],
+      "Galaxy": [
+        {
+          "type": "threat-actor",
+          "GalaxyCluster": [
+            {
+              "value": "Carbanak - FIN7"
+            }
+          ]
+        },
+        {
+          "type": "mitre-attack-pattern",
+          "GalaxyCluster": [
+            {
+              "value": "Phishing",
+              "meta": {
+                "external_id": [
+                  "T1566"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "about": "Shikari's parse_misp_event (shikari/parsers/misp_import.py) over each fixture.",
+  "fixtures": {
+    "shikari-event": {
+      "success": true,
+      "group_name": "",
+      "group_desc": "APT29 campaign",
+      "title": "APT29 campaign",
+      "techniques": [
+        "T1003.001",
+        "T1558.003"
+      ],
+      "tactics": [],
+      "procedures": [],
+      "iocs": {
+        "ip": [
+          "10.0.0.9"
+        ],
+        "domain": [
+          "evil2.example"
+        ],
+        "hash": [
+          "deadbeef",
+          "1234"
+        ],
+        "file": [
+          "x.exe"
+        ],
+        "reg": [
+          "HKLM\\Software\\Run"
+        ]
+      },
+      "ioc_mentions": {},
+      "source": "misp"
+    },
+    "edges": {
+      "success": true,
+      "group_name": "Carbanak",
+      "group_desc": "Edge event",
+      "title": "Edge event",
+      "techniques": [
+        "T1110",
+        "T1566"
+      ],
+      "tactics": [],
+      "procedures": [],
+      "iocs": {
+        "domain": [
+          "evil.example",
+          "c2.evil.example"
+        ],
+        "ip": [
+          "203.0.113.7"
+        ],
+        "reg": [
+          "HKLM\\Run"
+        ],
+        "hash": [
+          "3:AXGBicFlgVNhBGcL6wCrFQEv:AXGHsNhxLsr2C",
+          "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+        ],
+        "cmd": [
+          "whoami /all"
+        ],
+        "sw": [
+          "Global\\x"
+        ],
+        "file": [
+          "drop.dll"
+        ]
+      },
+      "ioc_mentions": {},
+      "source": "misp"
+    },
+    "ostraka-event": {
+      "success": true,
+      "group_name": "",
+      "group_desc": "OST-2026-014: Cobalt Strike on the finance floor",
+      "title": "OST-2026-014: Cobalt Strike on the finance floor",
+      "techniques": [
+        "T1071.001"
+      ],
+      "tactics": [],
+      "procedures": [],
+      "iocs": {
+        "ip": [
+          "203.0.113.45"
+        ],
+        "hash": [
+          "9D3C7A1E5B2F48C06E1A7D4B9F3C2E8A1D6B5F4C3A2E1D0F9B8C7A6E5D4C3B2A"
+        ],
+        "domain": [
+          "evil.example",
+          "ostraka.test"
+        ],
+        "file": [
+          "C:\\Users\\Public\\beacon.exe"
+        ]
+      },
+      "ioc_mentions": {},
+      "source": "misp"
+    },
+    "shikari-run": {
+      "success": true,
+      "group_name": "Scattered Spider",
+      "group_desc": "Shikari run: Scattered Spider — 2 techniques, 2 detections",
+      "title": "Shikari run: Scattered Spider — 2 techniques, 2 detections",
+      "techniques": [
+        "T1059.001",
+        "T1543.003"
+      ],
+      "tactics": [],
+      "procedures": [],
+      "iocs": {
+        "domain": [
+          "evil.example"
+        ],
+        "ip": [
+          "203.0.113.5"
+        ],
+        "hash": [
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ],
+        "file": [
+          "beacon.exe"
+        ],
+        "sw": [
+          "EvilSvc"
+        ],
+        "reg": [
+          "HKLM\\System\\Foo"
+        ]
+      },
+      "ioc_mentions": {},
+      "source": "misp"
+    }
+  }
+}

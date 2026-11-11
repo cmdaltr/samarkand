@@ -1,0 +1,45 @@
+{
+  "about": "Shikari tests/unit/test_stix_misp.py, STIX_BUNDLE.",
+  "bundle": {
+    "type": "bundle",
+    "objects": [
+      {
+        "type": "intrusion-set",
+        "name": "APT29",
+        "description": "Cozy Bear"
+      },
+      {
+        "type": "attack-pattern",
+        "name": "LSASS Memory",
+        "external_references": [
+          {
+            "source_name": "mitre-attack",
+            "external_id": "T1003.001"
+          }
+        ]
+      },
+      {
+        "type": "indicator",
+        "name": "mimikatz",
+        "pattern_type": "stix",
+        "pattern": "[process:command_line = 'mimikatz sekurlsa::logonpasswords']"
+      },
+      {
+        "type": "indicator",
+        "pattern_type": "stix",
+        "pattern": "[ipv4-addr:value = '10.0.0.5'] OR [domain-name:value = 'evil.example']"
+      },
+      {
+        "type": "file",
+        "name": "bad.exe",
+        "hashes": {
+          "SHA-256": "abc123"
+        }
+      },
+      {
+        "type": "url",
+        "value": "http://evil.example/path"
+      }
+    ]
+  }
+}

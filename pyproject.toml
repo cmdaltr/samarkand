@@ -1,0 +1,48 @@
+[project]
+name = "samarkand"
+version = "0.1.0"
+description = "The licence, webhook and threat-intelligence wire formats shared by Ostraka, Shikari and Rowanholt"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Elastic-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "Ben Smith (cmdaltr)", email = "cmdaltr@gmail.com" }]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Typing :: Typed",
+]
+# Ed25519 for licences. Everything else is the standard library.
+dependencies = ["cryptography>=41"]
+
+[project.optional-dependencies]
+# The async webhook sender and MISP push, for products already on httpx
+async = ["httpx>=0.27"]
+dev = ["pytest>=8", "ruff>=0.8", "httpx>=0.27"]
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/samarkand"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/samarkand", "tests", "docs", "README.md", "LICENSE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S", "ASYNC"]
+ignore = ["S101"]
+
+[tool.ruff.lint.per-file-ignores]
+# Test vectors use fixed throwaway secrets
+"tests/**" = ["S105", "S106"]

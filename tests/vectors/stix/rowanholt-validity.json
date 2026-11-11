@@ -1,0 +1,28 @@
+{
+  "about": "Rowanholt tests/unit/test_threat_intel.py, test_stix_validity_beside_the_rows.",
+  "bundle": {
+    "type": "bundle",
+    "objects": [
+      {
+        "type": "indicator",
+        "id": "indicator--1",
+        "pattern": "[ipv4-addr:value = '198.51.100.23']",
+        "valid_from": "2026-01-01T00:00:00Z",
+        "valid_until": "2026-04-01T00:00:00.000Z",
+        "confidence": 80
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--2",
+        "pattern": "[ipv4-addr:value = '198.51.100.23']",
+        "valid_until": "2026-06-01T00:00:00Z",
+        "confidence": 40
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--3",
+        "pattern": "[domain-name:value = 'c2.example.test']"
+      }
+    ]
+  }
+}

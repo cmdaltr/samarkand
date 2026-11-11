@@ -1,0 +1,271 @@
+{
+  "about": "Rowanholt's build_layer (rowanholt/post/mitre/layers.py) with its pinned ATT&CK release.",
+  "attack_version": "20.1",
+  "platforms": [
+    "Containers",
+    "ESXi",
+    "IaaS",
+    "Identity Provider",
+    "Linux",
+    "Network Devices",
+    "Office Suite",
+    "PRE",
+    "SaaS",
+    "Windows",
+    "macOS"
+  ],
+  "techniques": {
+    "T1059.001": [
+      "#ed5565",
+      "#3 PowerShell cradle; #7 Encoded command"
+    ],
+    "T1059": [
+      "#ed5565",
+      "#3 parent"
+    ],
+    "T1071.001": [
+      "#ed5565",
+      "#4 Beacon to C2"
+    ],
+    "T1566": [
+      "#ffce54",
+      ""
+    ]
+  },
+  "legend": [
+    {
+      "label": "Confirmed finding",
+      "color": "#ed5565"
+    }
+  ],
+  "layers": {
+    "plain": {
+      "name": "CASE-1",
+      "versions": {
+        "attack": "20",
+        "navigator": "5.3.2",
+        "layer": "4.5"
+      },
+      "domain": "enterprise-attack",
+      "description": "",
+      "filters": {
+        "platforms": [
+          "Containers",
+          "ESXi",
+          "IaaS",
+          "Identity Provider",
+          "Linux",
+          "Network Devices",
+          "Office Suite",
+          "PRE",
+          "SaaS",
+          "Windows",
+          "macOS"
+        ]
+      },
+      "sorting": 0,
+      "layout": {
+        "layout": "side",
+        "aggregateFunction": "average",
+        "showID": false,
+        "showName": true,
+        "showAggregateScores": false,
+        "countUnscored": false
+      },
+      "hideDisabled": false,
+      "techniques": [
+        {
+          "techniqueID": "T1059",
+          "color": "#ed5565",
+          "comment": "#3 parent",
+          "enabled": true,
+          "metadata": [],
+          "showSubtechniques": true
+        },
+        {
+          "techniqueID": "T1059.001",
+          "color": "#ed5565",
+          "comment": "#3 PowerShell cradle; #7 Encoded command",
+          "enabled": true,
+          "metadata": [],
+          "showSubtechniques": false
+        },
+        {
+          "techniqueID": "T1071.001",
+          "color": "#ed5565",
+          "comment": "#4 Beacon to C2",
+          "enabled": true,
+          "metadata": [],
+          "showSubtechniques": false
+        },
+        {
+          "techniqueID": "T1566",
+          "color": "#ffce54",
+          "comment": "",
+          "enabled": true,
+          "metadata": [],
+          "showSubtechniques": false
+        }
+      ],
+      "gradient": {
+        "colors": [
+          "#ff6666ff",
+          "#ffe766ff",
+          "#8ec843ff"
+        ],
+        "minValue": 0,
+        "maxValue": 100
+      },
+      "legendItems": [],
+      "metadata": [],
+      "showTacticRowBackground": false,
+      "tacticRowBackground": "#dddddd",
+      "selectTechniquesAcrossTactics": true,
+      "selectSubtechniquesWithParent": false
+    },
+    "confirmed": {
+      "name": "CASE-1 (confirmed)",
+      "versions": {
+        "attack": "20",
+        "navigator": "5.3.2",
+        "layer": "4.5"
+      },
+      "domain": "enterprise-attack",
+      "description": "Techniques behind the analysts' confirmed findings only",
+      "filters": {
+        "platforms": [
+          "Containers",
+          "ESXi",
+          "IaaS",
+          "Identity Provider",
+          "Linux",
+          "Network Devices",
+          "Office Suite",
+          "PRE",
+          "SaaS",
+          "Windows",
+          "macOS"
+        ]
+      },
+      "sorting": 0,
+      "layout": {
+        "layout": "side",
+        "aggregateFunction": "average",
+        "showID": true,
+        "showName": true,
+        "showAggregateScores": false,
+        "countUnscored": false
+      },
+      "hideDisabled": false,
+      "techniques": [
+        {
+          "techniqueID": "T1059",
+          "color": "#ed5565",
+          "comment": "#3 parent",
+          "enabled": true,
+          "metadata": [],
+          "showSubtechniques": true
+        },
+        {
+          "techniqueID": "T1059.001",
+          "color": "#ed5565",
+          "comment": "#3 PowerShell cradle; #7 Encoded command",
+          "enabled": true,
+          "metadata": [],
+          "showSubtechniques": false
+        },
+        {
+          "techniqueID": "T1071.001",
+          "color": "#ed5565",
+          "comment": "#4 Beacon to C2",
+          "enabled": true,
+          "metadata": [],
+          "showSubtechniques": false
+        },
+        {
+          "techniqueID": "T1566",
+          "color": "#ffce54",
+          "comment": "",
+          "enabled": true,
+          "metadata": [],
+          "showSubtechniques": false
+        }
+      ],
+      "gradient": {
+        "colors": [
+          "#ff6666ff",
+          "#ffe766ff",
+          "#8ec843ff"
+        ],
+        "minValue": 0,
+        "maxValue": 100
+      },
+      "legendItems": [
+        {
+          "label": "Confirmed finding",
+          "color": "#ed5565"
+        }
+      ],
+      "metadata": [],
+      "showTacticRowBackground": false,
+      "tacticRowBackground": "#dddddd",
+      "selectTechniquesAcrossTactics": true,
+      "selectSubtechniquesWithParent": false
+    },
+    "mobile": {
+      "name": "CASE-1",
+      "versions": {
+        "attack": "20",
+        "navigator": "5.3.2",
+        "layer": "4.5"
+      },
+      "domain": "mobile-attack",
+      "description": "",
+      "filters": {
+        "platforms": [
+          "Android",
+          "iOS"
+        ]
+      },
+      "sorting": 0,
+      "layout": {
+        "layout": "side",
+        "aggregateFunction": "average",
+        "showID": false,
+        "showName": true,
+        "showAggregateScores": false,
+        "countUnscored": false
+      },
+      "hideDisabled": false,
+      "techniques": [
+        {
+          "techniqueID": "T1406",
+          "color": "#ed5565",
+          "comment": "x",
+          "enabled": true,
+          "metadata": [],
+          "showSubtechniques": false
+        }
+      ],
+      "gradient": {
+        "colors": [
+          "#ff6666ff",
+          "#ffe766ff",
+          "#8ec843ff"
+        ],
+        "minValue": 0,
+        "maxValue": 100
+      },
+      "legendItems": [],
+      "metadata": [],
+      "showTacticRowBackground": false,
+      "tacticRowBackground": "#dddddd",
+      "selectTechniquesAcrossTactics": true,
+      "selectSubtechniquesWithParent": false
+    }
+  },
+  "mobile_platforms": [
+    "Android",
+    "iOS"
+  ]
+}

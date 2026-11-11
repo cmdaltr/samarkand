@@ -1,0 +1,106 @@
+{
+  "about": "Webhook bodies as the bytes sent, each with its signature under `secret`.",
+  "deliveries": [
+    {
+      "event": "incident.created",
+      "data": {
+        "ref": "OST-2026-001",
+        "title": "Beaconing to [ip address]"
+      },
+      "sent_at": "2026-11-11T12:00:00+00:00",
+      "secret": "s3cret-s3cret-s3cret",
+      "body": "{\"event\": \"incident.created\", \"sent_at\": \"2026-11-11T12:00:00+00:00\", \"data\": {\"ref\": \"OST-2026-001\", \"title\": \"Beaconing to [ip address]\"}}",
+      "signature": "sha256=89ea77b007f480c85438ff1eecb1fb2cdc1b0f7ce68ead6096ae3c8c32b3bfee"
+    },
+    {
+      "event": "run.completed",
+      "data": {
+        "run": "FIN7",
+        "phase": "done",
+        "created_yaml": 12
+      },
+      "sent_at": "2026-11-11T12:00:00.123456+00:00",
+      "secret": "s3cret-s3cret-s3cret",
+      "body": "{\"event\": \"run.completed\", \"sent_at\": \"2026-11-11T12:00:00.123456+00:00\", \"data\": {\"run\": \"FIN7\", \"phase\": \"done\", \"created_yaml\": 12}}",
+      "signature": "sha256=6f342f87463a76b1312f36a298600a0f6d0923de7ae5a678c2115bf6eb5eede1"
+    },
+    {
+      "event": "job.failed",
+      "data": {
+        "job_id": "j1",
+        "error": "Read <path>: no such file",
+        "images": 2
+      },
+      "sent_at": "2026-11-11T12:00:00+00:00",
+      "secret": "s3cret-s3cret-s3cret",
+      "body": "{\"event\": \"job.failed\", \"sent_at\": \"2026-11-11T12:00:00+00:00\", \"data\": {\"job_id\": \"j1\", \"error\": \"Read <path>: no such file\", \"images\": 2}}",
+      "signature": "sha256=d4fc09c9c83ddb36d9491527e428a9ed08cb91076391b3a16bc0e0699fa2067c"
+    },
+    {
+      "event": "finding.confirmed",
+      "data": {
+        "host": "FIN-WS-07",
+        "note": "café, naïve, 東京"
+      },
+      "sent_at": "2026-11-11T12:00:00+00:00",
+      "secret": "s3cret-s3cret-s3cret",
+      "body": "{\"event\": \"finding.confirmed\", \"sent_at\": \"2026-11-11T12:00:00+00:00\", \"data\": {\"host\": \"FIN-WS-07\", \"note\": \"caf\\u00e9, na\\u00efve, \\u6771\\u4eac\"}}",
+      "signature": "sha256=0ebd83af9ffa79ff21c7ef6c86a991eee6b9536eaabfec7fce56dcbe393448e9"
+    }
+  ],
+  "epoch_sent_at": {
+    "note": "Shikari's and Rowanholt's bodies before samarkand: sent_at as epoch seconds.",
+    "body": "{\"event\": \"run.completed\", \"sent_at\": 1762862400.5, \"data\": {\"run\": \"FIN7\"}}",
+    "signature": "sha256=7ac51abf2b5686b8aacc08175fba8a81661f5576bc63eccdce3f1715883973db",
+    "secret": "s3cret-s3cret-s3cret"
+  },
+  "headers": {
+    "X-Ostraka": [
+      "X-Ostraka-Event",
+      "X-Ostraka-Signature"
+    ],
+    "X-Shikari": [
+      "X-Shikari-Event",
+      "X-Shikari-Signature"
+    ],
+    "X-Rowanholt": [
+      "X-Rowanholt-Event",
+      "X-Rowanholt-Signature"
+    ]
+  },
+  "urls": {
+    "allowed": [
+      "https://hooks.example.org/ostraka",
+      "https://soar.example.org/rowanholt",
+      "https://10.0.0.5/hook",
+      "https://203.0.113.9/hook",
+      "http://localhost:8080/hook",
+      "http://soar.localhost/hook",
+      "http://127.0.0.1:9000/hook",
+      "http://[::1]/h",
+      "http://10.1.2.3/hook",
+      "http://172.20.0.5/h",
+      "http://192.168.1.10:5000/h",
+      "HTTPS://Hooks.Example.org/x"
+    ],
+    "refused": [
+      "http://hooks.example.org/ostraka",
+      "http://203.0.113.9/hook",
+      "http://8.8.8.8/h",
+      "http://172.32.0.1/h",
+      "http://[fd00::1]/h",
+      "http://localhost.localdomain/h",
+      "https://169.254.169.254/latest/meta-data",
+      "http://169.254.169.254/latest/meta-data",
+      "https://[fe80::1]/h",
+      "https://[::ffff:169.254.169.254]/h",
+      "https://user:pw@soar.example.org/h",
+      "https://user@soar.example.org/h",
+      "ftp://hooks.example.org",
+      "hooks.example.org/ostraka",
+      "soar",
+      "https://",
+      ""
+    ]
+  }
+}

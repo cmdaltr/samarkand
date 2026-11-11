@@ -1,0 +1,430 @@
+{
+  "about": "Rowanholt's parse_stix_bundle_with_validity (rowanholt/threat_intel/stix.py) over each fixture: its ten-column rows and the validity beside them.",
+  "fixtures": {
+    "rowanholt-groups": {
+      "rows": [
+        {
+          "Evidential Element": "c2.example.test",
+          "Threat Group": "APT34",
+          "Procedure Example": "C2",
+          "Technique ID": "T1071.001",
+          "Technique Name": "Web Protocols",
+          "Tactic": "Command And Control",
+          "Contextual Evidence": "domain: C2",
+          "Reference URL": "https://intel.example/report",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: bundle--1"
+        },
+        {
+          "Evidential Element": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "Threat Group": "",
+          "Procedure Example": "",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "hash: indicator",
+          "Reference URL": "",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: bundle--1"
+        },
+        {
+          "Evidential Element": "powershell -enc AAA",
+          "Threat Group": "",
+          "Procedure Example": "",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "cmd: indicator",
+          "Reference URL": "",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: bundle--1"
+        }
+      ],
+      "validity": []
+    },
+    "rowanholt-validity": {
+      "rows": [
+        {
+          "Evidential Element": "198.51.100.23",
+          "Threat Group": "",
+          "Procedure Example": "",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "ip: indicator",
+          "Reference URL": "",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: bundle"
+        },
+        {
+          "Evidential Element": "c2.example.test",
+          "Threat Group": "",
+          "Procedure Example": "",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "domain: indicator",
+          "Reference URL": "",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: bundle"
+        }
+      ],
+      "validity": [
+        {
+          "key": [
+            "198.51.100.23",
+            "",
+            "",
+            "stix: bundle"
+          ],
+          "valid_until": "2026-06-01T00:00:00",
+          "confidence": 80,
+          "first_seen": "2026-01-01T00:00:00"
+        }
+      ]
+    },
+    "shikari-bundle": {
+      "rows": [],
+      "validity": []
+    },
+    "edges": {
+      "rows": [
+        {
+          "Evidential Element": "it's.exe",
+          "Threat Group": "FIN7",
+          "Procedure Example": "Quoted path T1105",
+          "Technique ID": "T1105",
+          "Technique Name": "",
+          "Tactic": "Command And Control",
+          "Contextual Evidence": "file: Quoted path T1105",
+          "Reference URL": "https://vendor.example/r/1",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: Edge report"
+        },
+        {
+          "Evidential Element": "HKLM\\Run%",
+          "Threat Group": "FIN7",
+          "Procedure Example": "Quoted path T1105",
+          "Technique ID": "T1105",
+          "Technique Name": "",
+          "Tactic": "Command And Control",
+          "Contextual Evidence": "reg: Quoted path T1105",
+          "Reference URL": "https://vendor.example/r/1",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: Edge report"
+        },
+        {
+          "Evidential Element": "192.0.2.10",
+          "Threat Group": "FIN7",
+          "Procedure Example": "",
+          "Technique ID": "T1059.001",
+          "Technique Name": "PowerShell",
+          "Tactic": "Execution",
+          "Contextual Evidence": "ip: ipv4-addr",
+          "Reference URL": "https://vendor.example/r/1",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: Edge report"
+        },
+        {
+          "Evidential Element": "https://evil.example/a?b=1",
+          "Threat Group": "FIN7",
+          "Procedure Example": "",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "url: indicator",
+          "Reference URL": "https://vendor.example/r/1",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: Edge report"
+        },
+        {
+          "Evidential Element": "Cobalt Strike",
+          "Threat Group": "FIN7",
+          "Procedure Example": "",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "software: indicator",
+          "Reference URL": "https://vendor.example/r/1",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: Edge report"
+        },
+        {
+          "Evidential Element": "rundll32.exe",
+          "Threat Group": "FIN7",
+          "Procedure Example": "",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "software: indicator",
+          "Reference URL": "https://vendor.example/r/1",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: Edge report"
+        },
+        {
+          "Evidential Element": "cmd /c whoami",
+          "Threat Group": "FIN7",
+          "Procedure Example": "",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "cmd: process",
+          "Reference URL": "https://vendor.example/r/1",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: Edge report"
+        },
+        {
+          "Evidential Element": "HKCU\\Software\\Evil",
+          "Threat Group": "FIN7",
+          "Procedure Example": "",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "reg: windows-registry-key",
+          "Reference URL": "https://vendor.example/r/1",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: Edge report"
+        },
+        {
+          "Evidential Element": "evil.example",
+          "Threat Group": "FIN7",
+          "Procedure Example": "",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "domain: domain-name",
+          "Reference URL": "https://vendor.example/r/1",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: Edge report"
+        }
+      ],
+      "validity": []
+    },
+    "ostraka-bundle": {
+      "rows": [
+        {
+          "Evidential Element": "203.0.113.45",
+          "Threat Group": "",
+          "Procedure Example": "",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "ip: ipv4-addr",
+          "Reference URL": "http://ostraka.test/incidents/OST-2026-014",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: OST-2026-014: Cobalt Strike on the finance floor"
+        },
+        {
+          "Evidential Element": "203.0.113.45",
+          "Threat Group": "",
+          "Procedure Example": "Confirmed. Verdict: malicious. Cited by FND-12, FND-13.",
+          "Technique ID": "T1071.001",
+          "Technique Name": "Web Protocols",
+          "Tactic": "Command And Control",
+          "Contextual Evidence": "ip: OBS-1 (ip address)",
+          "Reference URL": "http://ostraka.test/incidents/OST-2026-014",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: OST-2026-014: Cobalt Strike on the finance floor"
+        },
+        {
+          "Evidential Element": "203.0.113.45",
+          "Threat Group": "",
+          "Procedure Example": "Confirmed. Verdict: malicious. Cited by FND-12, FND-13.",
+          "Technique ID": "T1041",
+          "Technique Name": "Exfiltration Over C2 Channel",
+          "Tactic": "Exfiltration",
+          "Contextual Evidence": "ip: OBS-1 (ip address)",
+          "Reference URL": "http://ostraka.test/incidents/OST-2026-014",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: OST-2026-014: Cobalt Strike on the finance floor"
+        },
+        {
+          "Evidential Element": "9d3c7a1e5b2f48c06e1a7d4b9f3c2e8a1d6b5f4c3a2e1d0f9b8c7a6e5d4c3b2a",
+          "Threat Group": "",
+          "Procedure Example": "",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "hash: file",
+          "Reference URL": "http://ostraka.test/incidents/OST-2026-014",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: OST-2026-014: Cobalt Strike on the finance floor"
+        },
+        {
+          "Evidential Element": "9d3c7a1e5b2f48c06e1a7d4b9f3c2e8a1d6b5f4c3a2e1d0f9b8c7a6e5d4c3b2a",
+          "Threat Group": "",
+          "Procedure Example": "Confirmed. Verdict: malicious. Cited by FND-12.",
+          "Technique ID": "T1071.001",
+          "Technique Name": "Web Protocols",
+          "Tactic": "Command And Control",
+          "Contextual Evidence": "hash: OBS-2 (file hash sha256)",
+          "Reference URL": "http://ostraka.test/incidents/OST-2026-014",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: OST-2026-014: Cobalt Strike on the finance floor"
+        },
+        {
+          "Evidential Element": "https://evil.example/it's/gate.php",
+          "Threat Group": "",
+          "Procedure Example": "",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "url: url",
+          "Reference URL": "http://ostraka.test/incidents/OST-2026-014",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: OST-2026-014: Cobalt Strike on the finance floor"
+        },
+        {
+          "Evidential Element": "https://evil.example/it's/gate.php",
+          "Threat Group": "",
+          "Procedure Example": "Lead, not confirmed. Verdict: suspicious. Cited by FND-13.",
+          "Technique ID": "T1041",
+          "Technique Name": "Exfiltration Over C2 Channel",
+          "Tactic": "Exfiltration",
+          "Contextual Evidence": "url: OBS-3 (url)",
+          "Reference URL": "http://ostraka.test/incidents/OST-2026-014",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: OST-2026-014: Cobalt Strike on the finance floor"
+        },
+        {
+          "Evidential Element": "https://evil.example/it's/gate.php",
+          "Threat Group": "",
+          "Procedure Example": "Lead, not confirmed. Verdict: suspicious. Cited by FND-13.",
+          "Technique ID": "T1071.001",
+          "Technique Name": "Web Protocols",
+          "Tactic": "Command And Control",
+          "Contextual Evidence": "url: OBS-3 (url)",
+          "Reference URL": "http://ostraka.test/incidents/OST-2026-014",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: OST-2026-014: Cobalt Strike on the finance floor"
+        },
+        {
+          "Evidential Element": "beacon.exe",
+          "Threat Group": "",
+          "Procedure Example": "beacon.exe",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "file: beacon.exe",
+          "Reference URL": "http://ostraka.test/incidents/OST-2026-014",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: OST-2026-014: Cobalt Strike on the finance floor"
+        },
+        {
+          "Evidential Element": "C:\\Users\\Public",
+          "Threat Group": "",
+          "Procedure Example": "Lead, not confirmed. Verdict: unknown.",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "file: OBS-4 (file path)",
+          "Reference URL": "http://ostraka.test/incidents/OST-2026-014",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: OST-2026-014: Cobalt Strike on the finance floor"
+        },
+        {
+          "Evidential Element": "powershell -nop -w hidden -enc SQBFAFgA",
+          "Threat Group": "",
+          "Procedure Example": "",
+          "Technique ID": "",
+          "Technique Name": "",
+          "Tactic": "",
+          "Contextual Evidence": "cmd: process",
+          "Reference URL": "http://ostraka.test/incidents/OST-2026-014",
+          "Navigation Layer URL": "",
+          "Source Type": "STIX: OST-2026-014: Cobalt Strike on the finance floor"
+        }
+      ],
+      "validity": [
+        {
+          "key": [
+            "203.0.113.45",
+            "",
+            "T1071.001",
+            "stix: ost-2026-014: cobalt strike on the finance floor"
+          ],
+          "valid_until": null,
+          "confidence": 85,
+          "first_seen": "2026-11-09T08:00:00"
+        },
+        {
+          "key": [
+            "203.0.113.45",
+            "",
+            "T1041",
+            "stix: ost-2026-014: cobalt strike on the finance floor"
+          ],
+          "valid_until": null,
+          "confidence": 85,
+          "first_seen": "2026-11-09T08:00:00"
+        },
+        {
+          "key": [
+            "9d3c7a1e5b2f48c06e1a7d4b9f3c2e8a1d6b5f4c3a2e1d0f9b8c7a6e5d4c3b2a",
+            "",
+            "T1071.001",
+            "stix: ost-2026-014: cobalt strike on the finance floor"
+          ],
+          "valid_until": null,
+          "confidence": 85,
+          "first_seen": "2026-11-09T08:00:00"
+        },
+        {
+          "key": [
+            "https://evil.example/it's/gate.php",
+            "",
+            "T1041",
+            "stix: ost-2026-014: cobalt strike on the finance floor"
+          ],
+          "valid_until": null,
+          "confidence": 15,
+          "first_seen": "2026-11-09T08:00:00"
+        },
+        {
+          "key": [
+            "https://evil.example/it's/gate.php",
+            "",
+            "T1071.001",
+            "stix: ost-2026-014: cobalt strike on the finance floor"
+          ],
+          "valid_until": null,
+          "confidence": 15,
+          "first_seen": "2026-11-09T08:00:00"
+        },
+        {
+          "key": [
+            "beacon.exe",
+            "",
+            "",
+            "stix: ost-2026-014: cobalt strike on the finance floor"
+          ],
+          "valid_until": null,
+          "confidence": 15,
+          "first_seen": "2026-11-09T08:00:00"
+        },
+        {
+          "key": [
+            "c:\\users\\public",
+            "",
+            "",
+            "stix: ost-2026-014: cobalt strike on the finance floor"
+          ],
+          "valid_until": null,
+          "confidence": 15,
+          "first_seen": "2026-11-09T08:00:00"
+        },
+        {
+          "key": [
+            "powershell -nop -w hidden -enc sqbfafga",
+            "",
+            "",
+            "stix: ost-2026-014: cobalt strike on the finance floor"
+          ],
+          "valid_until": null,
+          "confidence": 15,
+          "first_seen": "2026-11-09T08:00:00"
+        }
+      ]
+    }
+  }
+}

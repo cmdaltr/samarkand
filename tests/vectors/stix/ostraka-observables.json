@@ -1,0 +1,374 @@
+{
+  "about": "Ostraka's stix.cyber_observables(kind, value): the SCOs and the pattern.",
+  "cases": [
+    {
+      "kind": "ip_address",
+      "value": "203.0.113.45",
+      "objects": [
+        {
+          "type": "ipv4-addr",
+          "spec_version": "2.1",
+          "id": "ipv4-addr--cb9d70c5-d244-531c-9efb-bcae57adc793",
+          "value": "203.0.113.45"
+        }
+      ],
+      "pattern": "[ipv4-addr:value = '203.0.113.45']"
+    },
+    {
+      "kind": "ip_address",
+      "value": "2001:db8::1",
+      "objects": [
+        {
+          "type": "ipv6-addr",
+          "spec_version": "2.1",
+          "id": "ipv6-addr--6469e3a9-b053-5e34-a025-9396ae051d26",
+          "value": "2001:db8::1"
+        }
+      ],
+      "pattern": "[ipv6-addr:value = '2001:db8::1']"
+    },
+    {
+      "kind": "cidr",
+      "value": "10.0.0.0/8",
+      "objects": [
+        {
+          "type": "ipv4-addr",
+          "spec_version": "2.1",
+          "id": "ipv4-addr--86428b07-0841-50f5-884f-260544a6ebee",
+          "value": "10.0.0.0/8"
+        }
+      ],
+      "pattern": "[ipv4-addr:value = '10.0.0.0/8']"
+    },
+    {
+      "kind": "ip_address",
+      "value": "not-an-ip",
+      "objects": [],
+      "pattern": null
+    },
+    {
+      "kind": "domain",
+      "value": "evil.example",
+      "objects": [
+        {
+          "type": "domain-name",
+          "spec_version": "2.1",
+          "id": "domain-name--69228563-c8d2-54ae-aeca-5f4134cb59aa",
+          "value": "evil.example"
+        }
+      ],
+      "pattern": "[domain-name:value = 'evil.example']"
+    },
+    {
+      "kind": "url",
+      "value": "https://evil.example/it's/gate.php",
+      "objects": [
+        {
+          "type": "url",
+          "spec_version": "2.1",
+          "id": "url--7670dc8b-4215-5e85-8dc0-884ef4889a59",
+          "value": "https://evil.example/it's/gate.php"
+        }
+      ],
+      "pattern": "[url:value = 'https://evil.example/it\\'s/gate.php']"
+    },
+    {
+      "kind": "email",
+      "value": "ceo@example.org",
+      "objects": [
+        {
+          "type": "email-addr",
+          "spec_version": "2.1",
+          "id": "email-addr--8de2c5ed-8ac1-57ec-8ff5-b984f5ee3e63",
+          "value": "ceo@example.org"
+        }
+      ],
+      "pattern": "[email-addr:value = 'ceo@example.org']"
+    },
+    {
+      "kind": "email_subject",
+      "value": "Invoice overdue",
+      "objects": [
+        {
+          "type": "email-message",
+          "spec_version": "2.1",
+          "id": "email-message--f9f1fed8-02ae-5154-841e-589f2a387fe1",
+          "subject": "Invoice overdue",
+          "is_multipart": false
+        }
+      ],
+      "pattern": "[email-message:subject = 'Invoice overdue']"
+    },
+    {
+      "kind": "mutex",
+      "value": "Global\\MsWinZonesCacheCounterMutexA",
+      "objects": [
+        {
+          "type": "mutex",
+          "spec_version": "2.1",
+          "id": "mutex--3d345bd5-920b-5a87-8413-0edcc320f430",
+          "name": "Global\\MsWinZonesCacheCounterMutexA"
+        }
+      ],
+      "pattern": "[mutex:name = 'Global\\\\MsWinZonesCacheCounterMutexA']"
+    },
+    {
+      "kind": "registry_key",
+      "value": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+      "objects": [
+        {
+          "type": "windows-registry-key",
+          "spec_version": "2.1",
+          "id": "windows-registry-key--f6156d56-9ff4-50ce-961a-01591ff7da7c",
+          "key": "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"
+        }
+      ],
+      "pattern": "[windows-registry-key:key = 'HKLM\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run']"
+    },
+    {
+      "kind": "mac_address",
+      "value": "00-1A-2B-3C-4D-5E",
+      "objects": [
+        {
+          "type": "mac-addr",
+          "spec_version": "2.1",
+          "id": "mac-addr--8bbba7bb-0054-556b-a740-4d38221678a8",
+          "value": "00:1a:2b:3c:4d:5e"
+        }
+      ],
+      "pattern": "[mac-addr:value = '00:1a:2b:3c:4d:5e']"
+    },
+    {
+      "kind": "user_account",
+      "value": "svc_backup",
+      "objects": [
+        {
+          "type": "user-account",
+          "spec_version": "2.1",
+          "id": "user-account--6ad0219b-2946-555d-82a6-95700b5a0905",
+          "account_login": "svc_backup"
+        }
+      ],
+      "pattern": "[user-account:account_login = 'svc_backup']"
+    },
+    {
+      "kind": "file_hash_md5",
+      "value": "D41D8CD98F00B204E9800998ECF8427E",
+      "objects": [
+        {
+          "type": "file",
+          "spec_version": "2.1",
+          "id": "file--02fff920-f614-527c-81d1-6353633a6d21",
+          "hashes": {
+            "MD5": "d41d8cd98f00b204e9800998ecf8427e"
+          }
+        }
+      ],
+      "pattern": "[file:hashes.'MD5' = 'd41d8cd98f00b204e9800998ecf8427e']"
+    },
+    {
+      "kind": "file_hash_sha1",
+      "value": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+      "objects": [
+        {
+          "type": "file",
+          "spec_version": "2.1",
+          "id": "file--fa6e66a5-f019-51f9-8ab5-812023e58c6e",
+          "hashes": {
+            "SHA-1": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          }
+        }
+      ],
+      "pattern": "[file:hashes.'SHA-1' = 'da39a3ee5e6b4b0d3255bfef95601890afd80709']"
+    },
+    {
+      "kind": "file_hash_sha256",
+      "value": "9D3C7A1E5B2F48C06E1A7D4B9F3C2E8A1D6B5F4C3A2E1D0F9B8C7A6E5D4C3B2A",
+      "objects": [
+        {
+          "type": "file",
+          "spec_version": "2.1",
+          "id": "file--ea5bd896-39a0-5cf9-961c-d1c3b71a5283",
+          "hashes": {
+            "SHA-256": "9d3c7a1e5b2f48c06e1a7d4b9f3c2e8a1d6b5f4c3a2e1d0f9b8c7a6e5d4c3b2a"
+          }
+        }
+      ],
+      "pattern": "[file:hashes.'SHA-256' = '9d3c7a1e5b2f48c06e1a7d4b9f3c2e8a1d6b5f4c3a2e1d0f9b8c7a6e5d4c3b2a']"
+    },
+    {
+      "kind": "file_name",
+      "value": "beacon.exe",
+      "objects": [
+        {
+          "type": "file",
+          "spec_version": "2.1",
+          "id": "file--99577d3c-8f1c-5d3e-a1fb-3d94319bb42e",
+          "name": "beacon.exe"
+        }
+      ],
+      "pattern": "[file:name = 'beacon.exe']"
+    },
+    {
+      "kind": "file_path",
+      "value": "C:\\Users\\Public\\beacon.exe",
+      "objects": [
+        {
+          "type": "file",
+          "spec_version": "2.1",
+          "id": "file--c00f177f-f074-5cdf-9ff9-f6986140eaa5",
+          "name": "beacon.exe",
+          "parent_directory_ref": "directory--9cbb5121-7a48-5719-8f2f-170809992f9b"
+        },
+        {
+          "type": "directory",
+          "spec_version": "2.1",
+          "id": "directory--9cbb5121-7a48-5719-8f2f-170809992f9b",
+          "path": "C:\\Users\\Public"
+        }
+      ],
+      "pattern": "[file:name = 'beacon.exe' AND file:parent_directory_ref.path = 'C:\\\\Users\\\\Public']"
+    },
+    {
+      "kind": "file_path",
+      "value": "/tmp/.x/payload",
+      "objects": [
+        {
+          "type": "file",
+          "spec_version": "2.1",
+          "id": "file--ec1ab1d3-3f4a-540a-b673-5c9c3d489ef4",
+          "name": "payload",
+          "parent_directory_ref": "directory--c64e1f91-d90b-5c36-9002-9d416a6384de"
+        },
+        {
+          "type": "directory",
+          "spec_version": "2.1",
+          "id": "directory--c64e1f91-d90b-5c36-9002-9d416a6384de",
+          "path": "/tmp/.x"
+        }
+      ],
+      "pattern": "[file:name = 'payload' AND file:parent_directory_ref.path = '/tmp/.x']"
+    },
+    {
+      "kind": "file_path",
+      "value": "/var/tmp/",
+      "objects": [
+        {
+          "type": "directory",
+          "spec_version": "2.1",
+          "id": "directory--a4a7639a-0aa3-589e-99ec-b319608f09e1",
+          "path": "/var/tmp/"
+        }
+      ],
+      "pattern": "[directory:path = '/var/tmp/']"
+    },
+    {
+      "kind": "file_path",
+      "value": "payload.sh",
+      "objects": [
+        {
+          "type": "file",
+          "spec_version": "2.1",
+          "id": "file--733c4288-a5c0-5fe4-992b-89d493f183e2",
+          "name": "payload.sh"
+        }
+      ],
+      "pattern": "[file:name = 'payload.sh']"
+    },
+    {
+      "kind": "process_name",
+      "value": "rundll32.exe",
+      "objects": [
+        {
+          "type": "file",
+          "spec_version": "2.1",
+          "id": "file--f354d6b5-447d-5365-a2de-e476526aec5b",
+          "name": "rundll32.exe"
+        }
+      ],
+      "pattern": "[process:image_ref.name = 'rundll32.exe']"
+    },
+    {
+      "kind": "process_command",
+      "value": "powershell -nop -w hidden -enc SQBFAFgA",
+      "objects": [
+        {
+          "type": "process",
+          "spec_version": "2.1",
+          "id": "process--f99ffe34-accf-5660-99ab-042b5c09bbdf",
+          "command_line": "powershell -nop -w hidden -enc SQBFAFgA"
+        }
+      ],
+      "pattern": "[process:command_line = 'powershell -nop -w hidden -enc SQBFAFgA']"
+    },
+    {
+      "kind": "asn",
+      "value": "AS13335",
+      "objects": [
+        {
+          "type": "autonomous-system",
+          "spec_version": "2.1",
+          "id": "autonomous-system--0204c07d-e4dd-5f14-a3d5-c93cb1c5a9fc",
+          "number": 13335
+        }
+      ],
+      "pattern": "[autonomous-system:number = 13335]"
+    },
+    {
+      "kind": "asn",
+      "value": "ASX",
+      "objects": [],
+      "pattern": null
+    },
+    {
+      "kind": "certificate",
+      "value": "AB:CD:EF:01:23:45:67:89:AB:CD:EF:01:23:45:67:89:AB:CD:EF:01",
+      "objects": [
+        {
+          "type": "x509-certificate",
+          "spec_version": "2.1",
+          "id": "x509-certificate--2e03e198-945b-5155-ae0f-c9ed2aa60fdf",
+          "serial_number": "AB:CD:EF:01:23:45:67:89:AB:CD:EF:01:23:45:67:89:AB:CD:EF:01"
+        }
+      ],
+      "pattern": "[x509-certificate:serial_number = 'AB:CD:EF:01:23:45:67:89:AB:CD:EF:01:23:45:67:89:AB:CD:EF:01']"
+    },
+    {
+      "kind": "certificate",
+      "value": "0x1234serial",
+      "objects": [
+        {
+          "type": "x509-certificate",
+          "spec_version": "2.1",
+          "id": "x509-certificate--255a26fc-277c-51d0-847b-690f675216f1",
+          "serial_number": "0x1234serial"
+        }
+      ],
+      "pattern": "[x509-certificate:serial_number = '0x1234serial']"
+    },
+    {
+      "kind": "service_name",
+      "value": "EvilSvc",
+      "objects": [],
+      "pattern": "[process:extensions.'windows-service-ext'.service_name = 'EvilSvc']"
+    },
+    {
+      "kind": "user_agent",
+      "value": "Mozilla/5.0 (evil)",
+      "objects": [],
+      "pattern": "[network-traffic:extensions.'http-request-ext'.request_header.'User-Agent' = 'Mozilla/5.0 (evil)']"
+    },
+    {
+      "kind": "alias",
+      "value": "Big Bad",
+      "objects": [],
+      "pattern": null
+    },
+    {
+      "kind": "phone_number",
+      "value": "+44 20 7946 0000",
+      "objects": [],
+      "pattern": null
+    }
+  ]
+}

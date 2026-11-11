@@ -1,0 +1,608 @@
+{
+  "about": "Ostraka's STIX export (exports/stix.py) of test_exports_units.record(), at NOW.",
+  "now": "2026-11-11T12:00:00.123456+00:00",
+  "bundle": {
+    "type": "bundle",
+    "id": "bundle--519ddee3-555b-5f46-acdd-fcdab0352297",
+    "objects": [
+      {
+        "type": "identity",
+        "spec_version": "2.1",
+        "id": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "name": "Northwind Ltd",
+        "identity_class": "organization"
+      },
+      {
+        "type": "marking-definition",
+        "spec_version": "2.1",
+        "id": "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421",
+        "created": "2022-10-01T00:00:00.000Z",
+        "name": "TLP:AMBER",
+        "extensions": {
+          "extension-definition--60a3c5c5-0d10-413e-aab3-9e08dde9e88d": {
+            "extension_type": "property-extension",
+            "tlp_2_0": "amber"
+          }
+        }
+      },
+      {
+        "type": "incident",
+        "id": "incident--dd63f150-09ec-5db9-881f-86c506dbfb06",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "OST-2026-014: Cobalt Strike on the finance floor",
+        "description": "A beacon on one workstation.",
+        "labels": [
+          "severity-high",
+          "incident"
+        ],
+        "external_references": [
+          {
+            "source_name": "ostraka",
+            "external_id": "OST-2026-014",
+            "url": "http://ostraka.test/incidents/OST-2026-014"
+          }
+        ]
+      },
+      {
+        "type": "attack-pattern",
+        "id": "attack-pattern--f0f78264-2515-5793-a0c8-394eafa8d3fa",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "Exfiltration Over C2 Channel",
+        "external_references": [
+          {
+            "source_name": "mitre-attack",
+            "external_id": "T1041",
+            "url": "https://attack.mitre.org/techniques/T1041/"
+          }
+        ],
+        "kill_chain_phases": [
+          {
+            "kill_chain_name": "mitre-attack",
+            "phase_name": "exfiltration"
+          }
+        ]
+      },
+      {
+        "type": "attack-pattern",
+        "id": "attack-pattern--463a3c6a-a3e8-5933-a60d-10d4f1305bf9",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "Web Protocols",
+        "external_references": [
+          {
+            "source_name": "mitre-attack",
+            "external_id": "T1071.001",
+            "url": "https://attack.mitre.org/techniques/T1071/001/"
+          }
+        ],
+        "kill_chain_phases": [
+          {
+            "kill_chain_name": "mitre-attack",
+            "phase_name": "command-and-control"
+          }
+        ]
+      },
+      {
+        "type": "ipv4-addr",
+        "spec_version": "2.1",
+        "id": "ipv4-addr--cb9d70c5-d244-531c-9efb-bcae57adc793",
+        "value": "203.0.113.45",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ]
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--a4e5178a-990e-5e76-8149-cd299d377711",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "OBS-1 (ip address)",
+        "description": "Confirmed. Verdict: malicious. Cited by FND-12, FND-13.",
+        "indicator_types": [
+          "malicious-activity"
+        ],
+        "pattern": "[ipv4-addr:value = '203.0.113.45']",
+        "pattern_type": "stix",
+        "pattern_version": "2.1",
+        "valid_from": "2026-11-09T08:00:00.000Z",
+        "labels": [
+          "confirmed"
+        ],
+        "confidence": 85,
+        "external_references": [
+          {
+            "source_name": "ostraka",
+            "external_id": "OBS-1"
+          }
+        ]
+      },
+      {
+        "type": "observed-data",
+        "id": "observed-data--add6de7b-e4f9-5f62-91ab-9d964b60f47c",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "first_observed": "2026-11-09T08:00:00.000Z",
+        "last_observed": "2026-11-09T08:00:00.000Z",
+        "number_observed": 1,
+        "object_refs": [
+          "ipv4-addr--cb9d70c5-d244-531c-9efb-bcae57adc793"
+        ],
+        "labels": [
+          "confirmed"
+        ],
+        "confidence": 85
+      },
+      {
+        "type": "sighting",
+        "id": "sighting--add6de7b-e4f9-5f62-91ab-9d964b60f47c",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "sighting_of_ref": "indicator--a4e5178a-990e-5e76-8149-cd299d377711",
+        "observed_data_refs": [
+          "observed-data--add6de7b-e4f9-5f62-91ab-9d964b60f47c"
+        ],
+        "where_sighted_refs": [
+          "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd"
+        ],
+        "first_seen": "2026-11-09T08:00:00.000Z",
+        "last_seen": "2026-11-09T08:00:00.000Z",
+        "count": 1,
+        "description": "Seen: host FIN-WS-07, source Defender XDR.",
+        "labels": [
+          "confirmed"
+        ],
+        "confidence": 85
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--c43815da-10a7-520b-87c3-c326efd2125b",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "indicates",
+        "source_ref": "indicator--a4e5178a-990e-5e76-8149-cd299d377711",
+        "target_ref": "attack-pattern--463a3c6a-a3e8-5933-a60d-10d4f1305bf9",
+        "description": "Through FND-12.",
+        "labels": [
+          "confirmed"
+        ],
+        "confidence": 85
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--63bd4201-ab76-5fb6-8d13-99e7602f3b56",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T09:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "indicates",
+        "source_ref": "indicator--a4e5178a-990e-5e76-8149-cd299d377711",
+        "target_ref": "attack-pattern--f0f78264-2515-5793-a0c8-394eafa8d3fa",
+        "description": "Through FND-13.",
+        "labels": [
+          "lead"
+        ],
+        "confidence": 15
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--d519d977-2db2-5d44-a03f-7d356dcef8ef",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T09:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "indicates",
+        "source_ref": "indicator--a4e5178a-990e-5e76-8149-cd299d377711",
+        "target_ref": "attack-pattern--463a3c6a-a3e8-5933-a60d-10d4f1305bf9",
+        "description": "Through FND-13.",
+        "labels": [
+          "lead"
+        ],
+        "confidence": 15
+      },
+      {
+        "type": "file",
+        "spec_version": "2.1",
+        "id": "file--ea5bd896-39a0-5cf9-961c-d1c3b71a5283",
+        "hashes": {
+          "SHA-256": "9d3c7a1e5b2f48c06e1a7d4b9f3c2e8a1d6b5f4c3a2e1d0f9b8c7a6e5d4c3b2a"
+        },
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ]
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--c725fb9a-db15-53dc-86e8-acb7a8908670",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "OBS-2 (file hash sha256)",
+        "description": "Confirmed. Verdict: malicious. Cited by FND-12.",
+        "indicator_types": [
+          "malicious-activity"
+        ],
+        "pattern": "[file:hashes.'SHA-256' = '9d3c7a1e5b2f48c06e1a7d4b9f3c2e8a1d6b5f4c3a2e1d0f9b8c7a6e5d4c3b2a']",
+        "pattern_type": "stix",
+        "pattern_version": "2.1",
+        "valid_from": "2026-11-09T08:00:00.000Z",
+        "labels": [
+          "confirmed"
+        ],
+        "confidence": 85,
+        "external_references": [
+          {
+            "source_name": "ostraka",
+            "external_id": "OBS-2"
+          }
+        ]
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--740a7793-0eb6-5fa0-9d81-59089f6464a6",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "indicates",
+        "source_ref": "indicator--c725fb9a-db15-53dc-86e8-acb7a8908670",
+        "target_ref": "attack-pattern--463a3c6a-a3e8-5933-a60d-10d4f1305bf9",
+        "description": "Through FND-12.",
+        "labels": [
+          "confirmed"
+        ],
+        "confidence": 85
+      },
+      {
+        "type": "url",
+        "spec_version": "2.1",
+        "id": "url--7670dc8b-4215-5e85-8dc0-884ef4889a59",
+        "value": "https://evil.example/it's/gate.php",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ]
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--9c27ad25-2021-539a-8dba-7c6c9068834b",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "OBS-3 (url)",
+        "description": "Lead, not confirmed. Verdict: suspicious. Cited by FND-13.",
+        "indicator_types": [
+          "anomalous-activity"
+        ],
+        "pattern": "[url:value = 'https://evil.example/it\\'s/gate.php']",
+        "pattern_type": "stix",
+        "pattern_version": "2.1",
+        "valid_from": "2026-11-09T08:00:00.000Z",
+        "labels": [
+          "lead"
+        ],
+        "confidence": 15,
+        "external_references": [
+          {
+            "source_name": "ostraka",
+            "external_id": "OBS-3"
+          }
+        ]
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--fa1191ff-297b-510e-8e1c-521be75db55f",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T09:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "indicates",
+        "source_ref": "indicator--9c27ad25-2021-539a-8dba-7c6c9068834b",
+        "target_ref": "attack-pattern--f0f78264-2515-5793-a0c8-394eafa8d3fa",
+        "description": "Through FND-13.",
+        "labels": [
+          "lead"
+        ],
+        "confidence": 15
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--5686c662-150a-551f-832b-b1a5dd8bfec1",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T09:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "indicates",
+        "source_ref": "indicator--9c27ad25-2021-539a-8dba-7c6c9068834b",
+        "target_ref": "attack-pattern--463a3c6a-a3e8-5933-a60d-10d4f1305bf9",
+        "description": "Through FND-13.",
+        "labels": [
+          "lead"
+        ],
+        "confidence": 15
+      },
+      {
+        "type": "file",
+        "spec_version": "2.1",
+        "id": "file--c00f177f-f074-5cdf-9ff9-f6986140eaa5",
+        "name": "beacon.exe",
+        "parent_directory_ref": "directory--9cbb5121-7a48-5719-8f2f-170809992f9b",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ]
+      },
+      {
+        "type": "directory",
+        "spec_version": "2.1",
+        "id": "directory--9cbb5121-7a48-5719-8f2f-170809992f9b",
+        "path": "C:\\Users\\Public",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ]
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--8ba88f38-eb71-5346-80bf-60d5fbcf69df",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "OBS-4 (file path)",
+        "description": "Lead, not confirmed. Verdict: unknown.",
+        "indicator_types": [
+          "anomalous-activity"
+        ],
+        "pattern": "[file:name = 'beacon.exe' AND file:parent_directory_ref.path = 'C:\\\\Users\\\\Public']",
+        "pattern_type": "stix",
+        "pattern_version": "2.1",
+        "valid_from": "2026-11-09T08:00:00.000Z",
+        "labels": [
+          "lead"
+        ],
+        "confidence": 15,
+        "external_references": [
+          {
+            "source_name": "ostraka",
+            "external_id": "OBS-4"
+          }
+        ]
+      },
+      {
+        "type": "process",
+        "spec_version": "2.1",
+        "id": "process--f99ffe34-accf-5660-99ab-042b5c09bbdf",
+        "command_line": "powershell -nop -w hidden -enc SQBFAFgA",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ]
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--9afa03b2-66eb-5222-afac-1666dcfc5c8c",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "OBS-5 (process command)",
+        "description": "Lead, not confirmed. Verdict: suspicious.",
+        "indicator_types": [
+          "anomalous-activity"
+        ],
+        "pattern": "[process:command_line = 'powershell -nop -w hidden -enc SQBFAFgA']",
+        "pattern_type": "stix",
+        "pattern_version": "2.1",
+        "valid_from": "2026-11-09T08:00:00.000Z",
+        "labels": [
+          "lead"
+        ],
+        "confidence": 15,
+        "external_references": [
+          {
+            "source_name": "ostraka",
+            "external_id": "OBS-5"
+          }
+        ]
+      },
+      {
+        "type": "vulnerability",
+        "id": "vulnerability--3f9f079d-4d59-5422-b3da-9b4d1280d454",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "CVE-2024-3400",
+        "external_references": [
+          {
+            "source_name": "cve",
+            "external_id": "CVE-2024-3400"
+          }
+        ],
+        "labels": [
+          "lead"
+        ],
+        "confidence": 15
+      },
+      {
+        "type": "note",
+        "id": "note--b5705162-351d-5601-9860-2378e11d9add",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "abstract": "FND-12: Beacon to the C2 address from FIN-WS-07",
+        "content": "Confirmed finding (evidence). Based on the proxy logs, we determine the host beaconed.",
+        "object_refs": [
+          "incident--dd63f150-09ec-5db9-881f-86c506dbfb06",
+          "indicator--a4e5178a-990e-5e76-8149-cd299d377711",
+          "indicator--c725fb9a-db15-53dc-86e8-acb7a8908670",
+          "attack-pattern--463a3c6a-a3e8-5933-a60d-10d4f1305bf9"
+        ],
+        "labels": [
+          "confirmed"
+        ],
+        "confidence": 85,
+        "external_references": [
+          {
+            "source_name": "ostraka",
+            "external_id": "FND-12",
+            "url": "http://ostraka.test/incidents/OST-2026-014?s=findings#FND-12"
+          }
+        ]
+      },
+      {
+        "type": "note",
+        "id": "note--0a224e61-842e-544d-aa9a-80bea47c6746",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T09:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "abstract": "FND-13: Possible exfiltration over the same channel",
+        "content": "Lead, not confirmed (potential).",
+        "object_refs": [
+          "incident--dd63f150-09ec-5db9-881f-86c506dbfb06",
+          "indicator--9c27ad25-2021-539a-8dba-7c6c9068834b",
+          "indicator--a4e5178a-990e-5e76-8149-cd299d377711",
+          "attack-pattern--f0f78264-2515-5793-a0c8-394eafa8d3fa",
+          "attack-pattern--463a3c6a-a3e8-5933-a60d-10d4f1305bf9"
+        ],
+        "labels": [
+          "lead"
+        ],
+        "confidence": 15,
+        "external_references": [
+          {
+            "source_name": "ostraka",
+            "external_id": "FND-13",
+            "url": "http://ostraka.test/incidents/OST-2026-014?s=findings#FND-13"
+          }
+        ]
+      },
+      {
+        "type": "report",
+        "id": "report--dd63f150-09ec-5db9-881f-86c506dbfb06",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--c140f95d-a62a-50b9-85c8-1c616edc6bfd",
+        "created": "2026-11-09T08:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.123Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "OST-2026-014: Cobalt Strike on the finance floor",
+        "description": "Exported from Ostraka. TLP:AMBER. Labels and confidence say whether each object is a confirmed finding or a lead.",
+        "report_types": [
+          "threat-report"
+        ],
+        "published": "2026-11-11T12:00:00.123Z",
+        "object_refs": [
+          "incident--dd63f150-09ec-5db9-881f-86c506dbfb06",
+          "attack-pattern--f0f78264-2515-5793-a0c8-394eafa8d3fa",
+          "attack-pattern--463a3c6a-a3e8-5933-a60d-10d4f1305bf9",
+          "ipv4-addr--cb9d70c5-d244-531c-9efb-bcae57adc793",
+          "indicator--a4e5178a-990e-5e76-8149-cd299d377711",
+          "observed-data--add6de7b-e4f9-5f62-91ab-9d964b60f47c",
+          "sighting--add6de7b-e4f9-5f62-91ab-9d964b60f47c",
+          "relationship--c43815da-10a7-520b-87c3-c326efd2125b",
+          "relationship--63bd4201-ab76-5fb6-8d13-99e7602f3b56",
+          "relationship--d519d977-2db2-5d44-a03f-7d356dcef8ef",
+          "file--ea5bd896-39a0-5cf9-961c-d1c3b71a5283",
+          "indicator--c725fb9a-db15-53dc-86e8-acb7a8908670",
+          "relationship--740a7793-0eb6-5fa0-9d81-59089f6464a6",
+          "url--7670dc8b-4215-5e85-8dc0-884ef4889a59",
+          "indicator--9c27ad25-2021-539a-8dba-7c6c9068834b",
+          "relationship--fa1191ff-297b-510e-8e1c-521be75db55f",
+          "relationship--5686c662-150a-551f-832b-b1a5dd8bfec1",
+          "file--c00f177f-f074-5cdf-9ff9-f6986140eaa5",
+          "directory--9cbb5121-7a48-5719-8f2f-170809992f9b",
+          "indicator--8ba88f38-eb71-5346-80bf-60d5fbcf69df",
+          "process--f99ffe34-accf-5660-99ab-042b5c09bbdf",
+          "indicator--9afa03b2-66eb-5222-afac-1666dcfc5c8c",
+          "vulnerability--3f9f079d-4d59-5422-b3da-9b4d1280d454",
+          "note--b5705162-351d-5601-9860-2378e11d9add",
+          "note--0a224e61-842e-544d-aa9a-80bea47c6746"
+        ],
+        "external_references": [
+          {
+            "source_name": "ostraka",
+            "external_id": "OST-2026-014",
+            "url": "http://ostraka.test/incidents/OST-2026-014"
+          }
+        ]
+      }
+    ]
+  }
+}

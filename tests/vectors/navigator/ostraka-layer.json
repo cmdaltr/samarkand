@@ -1,0 +1,209 @@
+{
+  "about": "Ostraka's Navigator layer (exports/navigator.py) of test_exports_units.record().",
+  "attack_version": "20.1",
+  "platforms": [
+    "Containers",
+    "ESXi",
+    "IaaS",
+    "Identity Provider",
+    "Linux",
+    "Network Devices",
+    "Office Suite",
+    "PRE",
+    "SaaS",
+    "Windows",
+    "macOS"
+  ],
+  "confirmed": {
+    "name": "OST-2026-014 (confirmed)",
+    "versions": {
+      "attack": "20",
+      "navigator": "5.3.2",
+      "layer": "4.5"
+    },
+    "domain": "enterprise-attack",
+    "description": "OST-2026-014: Cobalt Strike on the finance floor. Techniques behind the analysts' confirmed findings only. TLP:AMBER.",
+    "filters": {
+      "platforms": [
+        "Containers",
+        "ESXi",
+        "IaaS",
+        "Identity Provider",
+        "Linux",
+        "Network Devices",
+        "Office Suite",
+        "PRE",
+        "SaaS",
+        "Windows",
+        "macOS"
+      ]
+    },
+    "sorting": 0,
+    "layout": {
+      "layout": "side",
+      "aggregateFunction": "average",
+      "showID": true,
+      "showName": true,
+      "showAggregateScores": false,
+      "countUnscored": false
+    },
+    "hideDisabled": false,
+    "techniques": [
+      {
+        "techniqueID": "T1071.001",
+        "color": "#ed5565",
+        "comment": "FND-12 Beacon to the C2 address from FIN-WS-07 (confirmed)",
+        "enabled": true,
+        "metadata": [],
+        "links": [
+          {
+            "label": "FND-12",
+            "url": "http://ostraka.test/incidents/OST-2026-014?s=findings#FND-12"
+          }
+        ],
+        "showSubtechniques": false
+      }
+    ],
+    "gradient": {
+      "colors": [
+        "#ff6666ff",
+        "#ffe766ff",
+        "#8ec843ff"
+      ],
+      "minValue": 0,
+      "maxValue": 100
+    },
+    "legendItems": [
+      {
+        "label": "Confirmed finding",
+        "color": "#ed5565"
+      }
+    ],
+    "metadata": [
+      {
+        "name": "TLP",
+        "value": "TLP:AMBER"
+      },
+      {
+        "name": "Incident",
+        "value": "OST-2026-014"
+      },
+      {
+        "name": "Source",
+        "value": "http://ostraka.test/incidents/OST-2026-014"
+      }
+    ],
+    "links": [],
+    "showTacticRowBackground": false,
+    "tacticRowBackground": "#dddddd",
+    "selectTechniquesAcrossTactics": true,
+    "selectSubtechniquesWithParent": false
+  },
+  "with_leads": {
+    "name": "OST-2026-014 (confirmed and leads)",
+    "versions": {
+      "attack": "20",
+      "navigator": "5.3.2",
+      "layer": "4.5"
+    },
+    "domain": "enterprise-attack",
+    "description": "OST-2026-014: Cobalt Strike on the finance floor. Techniques behind confirmed findings, and leads in their own colour. TLP:AMBER.",
+    "filters": {
+      "platforms": [
+        "Containers",
+        "ESXi",
+        "IaaS",
+        "Identity Provider",
+        "Linux",
+        "Network Devices",
+        "Office Suite",
+        "PRE",
+        "SaaS",
+        "Windows",
+        "macOS"
+      ]
+    },
+    "sorting": 0,
+    "layout": {
+      "layout": "side",
+      "aggregateFunction": "average",
+      "showID": true,
+      "showName": true,
+      "showAggregateScores": false,
+      "countUnscored": false
+    },
+    "hideDisabled": false,
+    "techniques": [
+      {
+        "techniqueID": "T1041",
+        "color": "#ffce54",
+        "comment": "FND-13 Possible exfiltration over the same channel (lead)",
+        "enabled": true,
+        "metadata": [],
+        "links": [
+          {
+            "label": "FND-13",
+            "url": "http://ostraka.test/incidents/OST-2026-014?s=findings#FND-13"
+          }
+        ],
+        "showSubtechniques": false
+      },
+      {
+        "techniqueID": "T1071.001",
+        "color": "#ed5565",
+        "comment": "FND-12 Beacon to the C2 address from FIN-WS-07 (confirmed); FND-13 Possible exfiltration over the same channel (lead)",
+        "enabled": true,
+        "metadata": [],
+        "links": [
+          {
+            "label": "FND-12",
+            "url": "http://ostraka.test/incidents/OST-2026-014?s=findings#FND-12"
+          },
+          {
+            "label": "FND-13",
+            "url": "http://ostraka.test/incidents/OST-2026-014?s=findings#FND-13"
+          }
+        ],
+        "showSubtechniques": false
+      }
+    ],
+    "gradient": {
+      "colors": [
+        "#ff6666ff",
+        "#ffe766ff",
+        "#8ec843ff"
+      ],
+      "minValue": 0,
+      "maxValue": 100
+    },
+    "legendItems": [
+      {
+        "label": "Confirmed finding",
+        "color": "#ed5565"
+      },
+      {
+        "label": "Lead, not confirmed",
+        "color": "#ffce54"
+      }
+    ],
+    "metadata": [
+      {
+        "name": "TLP",
+        "value": "TLP:AMBER"
+      },
+      {
+        "name": "Incident",
+        "value": "OST-2026-014"
+      },
+      {
+        "name": "Source",
+        "value": "http://ostraka.test/incidents/OST-2026-014"
+      }
+    ],
+    "links": [],
+    "showTacticRowBackground": false,
+    "tacticRowBackground": "#dddddd",
+    "selectTechniquesAcrossTactics": true,
+    "selectSubtechniquesWithParent": false
+  }
+}

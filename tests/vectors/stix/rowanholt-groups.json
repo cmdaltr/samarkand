@@ -1,0 +1,65 @@
+{
+  "about": "Rowanholt tests/unit/test_threat_intel.py, test_stix_bundle_links_each_indicator_to_its_own_group_and_technique.",
+  "bundle": {
+    "type": "bundle",
+    "id": "bundle--1",
+    "objects": [
+      {
+        "type": "intrusion-set",
+        "id": "intrusion-set--1",
+        "name": "APT34"
+      },
+      {
+        "type": "intrusion-set",
+        "id": "intrusion-set--2",
+        "name": "APT35"
+      },
+      {
+        "type": "attack-pattern",
+        "id": "attack-pattern--1",
+        "name": "Web Protocols",
+        "external_references": [
+          {
+            "source_name": "mitre-attack",
+            "external_id": "T1071.001"
+          }
+        ],
+        "kill_chain_phases": [
+          {
+            "phase_name": "command-and-control"
+          }
+        ]
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--1",
+        "name": "C2",
+        "pattern": "[domain-name:value = 'c2.example.test']",
+        "external_references": [
+          {
+            "url": "https://intel.example/report"
+          }
+        ]
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--2",
+        "pattern": "[file:hashes.'SHA-256' = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'] OR [process:command_line = 'powershell -enc AAA']"
+      },
+      {
+        "type": "relationship",
+        "id": "r1",
+        "relationship_type": "indicates",
+        "source_ref": "indicator--1",
+        "target_ref": "intrusion-set--1"
+      },
+      {
+        "type": "relationship",
+        "id": "r2",
+        "relationship_type": "indicates",
+        "source_ref": "indicator--1",
+        "target_ref": "attack-pattern--1"
+      }
+    ]
+  }
+}

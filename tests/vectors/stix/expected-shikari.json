@@ -1,0 +1,146 @@
+{
+  "about": "Shikari's parse_stix_bundle (shikari/parsers/stix_import.py) over each fixture.",
+  "fixtures": {
+    "rowanholt-groups": {
+      "success": true,
+      "group_name": "APT34",
+      "group_desc": "",
+      "title": "APT34",
+      "techniques": [
+        "T1071.001"
+      ],
+      "tactics": [],
+      "procedures": [],
+      "iocs": {
+        "domain": [
+          "c2.example.test"
+        ],
+        "hash": [
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ],
+        "cmd": [
+          "powershell -enc AAA"
+        ]
+      },
+      "ioc_mentions": {},
+      "source": "stix"
+    },
+    "rowanholt-validity": {
+      "success": true,
+      "group_name": "",
+      "group_desc": "",
+      "title": "",
+      "techniques": [],
+      "tactics": [],
+      "procedures": [],
+      "iocs": {
+        "ip": [
+          "198.51.100.23"
+        ],
+        "domain": [
+          "c2.example.test"
+        ]
+      },
+      "ioc_mentions": {},
+      "source": "stix"
+    },
+    "shikari-bundle": {
+      "success": true,
+      "group_name": "APT29",
+      "group_desc": "Cozy Bear",
+      "title": "APT29",
+      "techniques": [
+        "T1003.001"
+      ],
+      "tactics": [],
+      "procedures": [],
+      "iocs": {
+        "cmd": [
+          "mimikatz sekurlsa::logonpasswords"
+        ],
+        "ip": [
+          "10.0.0.5"
+        ],
+        "domain": [
+          "evil.example"
+        ],
+        "hash": [
+          "abc123"
+        ],
+        "file": [
+          "bad.exe"
+        ]
+      },
+      "ioc_mentions": {},
+      "source": "stix"
+    },
+    "edges": {
+      "success": true,
+      "group_name": "FIN7",
+      "group_desc": "Edges",
+      "title": "Edge report",
+      "techniques": [
+        "T1059.001",
+        "T1105"
+      ],
+      "tactics": [],
+      "procedures": [],
+      "iocs": {
+        "file": [
+          "it\\"
+        ],
+        "reg": [
+          "HKLM\\\\Run%",
+          "HKCU\\Software\\Evil"
+        ],
+        "ip": [
+          "192.0.2.10"
+        ],
+        "domain": [
+          "evil.example"
+        ],
+        "sw": [
+          "Cobalt Strike",
+          "rundll32.exe"
+        ],
+        "cmd": [
+          "cmd /c whoami"
+        ]
+      },
+      "ioc_mentions": {},
+      "source": "stix"
+    },
+    "ostraka-bundle": {
+      "success": true,
+      "group_name": "",
+      "group_desc": "Exported from Ostraka. TLP:AMBER. Labels and confidence say whether each object is a confirmed finding or a lead.",
+      "title": "OST-2026-014: Cobalt Strike on the finance floor",
+      "techniques": [
+        "T1041",
+        "T1071.001"
+      ],
+      "tactics": [],
+      "procedures": [],
+      "iocs": {
+        "ip": [
+          "203.0.113.45"
+        ],
+        "hash": [
+          "9d3c7a1e5b2f48c06e1a7d4b9f3c2e8a1d6b5f4c3a2e1d0f9b8c7a6e5d4c3b2a"
+        ],
+        "domain": [
+          "evil.example"
+        ],
+        "file": [
+          "beacon.exe",
+          "C:\\\\Users\\\\Public"
+        ],
+        "cmd": [
+          "powershell -nop -w hidden -enc SQBFAFgA"
+        ]
+      },
+      "ioc_mentions": {},
+      "source": "stix"
+    }
+  }
+}

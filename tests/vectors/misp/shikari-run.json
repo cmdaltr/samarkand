@@ -1,0 +1,147 @@
+{
+  "about": "Shikari's run_to_misp (shikari/parsers/misp_export.py) for tests/unit/test_misp_export.py's DETS, with a description, on 11 November 2026.",
+  "group": "Scattered Spider",
+  "description": "A run's description",
+  "detections": [
+    {
+      "name": "PowerShell download cradle",
+      "technique_id": "T1059.001",
+      "technique_name": "PowerShell",
+      "siem": "mde",
+      "indicators": {
+        "domain": [
+          "evil.example"
+        ],
+        "ip": [
+          "203.0.113.5"
+        ],
+        "hash": [
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ],
+        "file": [
+          "beacon.exe"
+        ]
+      }
+    },
+    {
+      "name": "Service install",
+      "technique_id": "T1543.003",
+      "technique_name": "Windows Service",
+      "siem": "secops",
+      "indicators": {
+        "sw": [
+          "EvilSvc"
+        ],
+        "reg": [
+          "HKLM\\System\\Foo"
+        ]
+      }
+    }
+  ],
+  "event": {
+    "Event": {
+      "info": "Shikari run: Scattered Spider — 2 techniques, 2 detections",
+      "date": "2026-11-11",
+      "analysis": "2",
+      "threat_level_id": "2",
+      "distribution": "0",
+      "Attribute": [
+        {
+          "type": "comment",
+          "category": "External analysis",
+          "value": "A run's description",
+          "comment": "Shikari"
+        },
+        {
+          "type": "domain",
+          "category": "Network activity",
+          "value": "evil.example",
+          "to_ids": true,
+          "comment": "Shikari"
+        },
+        {
+          "type": "ip-dst",
+          "category": "Network activity",
+          "value": "203.0.113.5",
+          "to_ids": true,
+          "comment": "Shikari"
+        },
+        {
+          "type": "sha256",
+          "category": "Payload delivery",
+          "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "to_ids": true,
+          "comment": "Shikari"
+        },
+        {
+          "type": "filename",
+          "category": "Payload delivery",
+          "value": "beacon.exe",
+          "to_ids": true,
+          "comment": "Shikari"
+        },
+        {
+          "type": "windows-service-name",
+          "category": "Artifacts dropped",
+          "value": "EvilSvc",
+          "to_ids": false,
+          "comment": "Shikari"
+        },
+        {
+          "type": "regkey",
+          "category": "Persistence mechanism",
+          "value": "HKLM\\System\\Foo",
+          "to_ids": false,
+          "comment": "Shikari"
+        }
+      ],
+      "Tag": [
+        {
+          "name": "misp-galaxy:mitre-attack-pattern=\"PowerShell - T1059.001\""
+        },
+        {
+          "name": "misp-galaxy:mitre-attack-pattern=\"Windows Service - T1543.003\""
+        },
+        {
+          "name": "misp-galaxy:threat-actor=\"Scattered Spider\""
+        }
+      ],
+      "Galaxy": [
+        {
+          "type": "mitre-attack-pattern",
+          "name": "Attack Pattern",
+          "GalaxyCluster": [
+            {
+              "type": "mitre-attack-pattern",
+              "value": "PowerShell - T1059.001",
+              "meta": {
+                "external_id": [
+                  "T1059.001"
+                ]
+              }
+            },
+            {
+              "type": "mitre-attack-pattern",
+              "value": "Windows Service - T1543.003",
+              "meta": {
+                "external_id": [
+                  "T1543.003"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "type": "threat-actor",
+          "name": "Threat Actor",
+          "GalaxyCluster": [
+            {
+              "type": "threat-actor",
+              "value": "Scattered Spider"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

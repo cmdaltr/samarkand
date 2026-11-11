@@ -1,0 +1,48 @@
+{
+  "about": "Shikari tests/unit/test_stix_misp.py, MISP_EVENT.",
+  "event": {
+    "Event": {
+      "info": "APT29 campaign",
+      "Attribute": [
+        {
+          "type": "ip-dst",
+          "value": "10.0.0.9"
+        },
+        {
+          "type": "domain",
+          "value": "evil2.example"
+        },
+        {
+          "type": "sha256",
+          "value": "deadbeef"
+        },
+        {
+          "type": "filename|md5",
+          "value": "x.exe|1234"
+        },
+        {
+          "type": "regkey",
+          "value": "HKLM\\Software\\Run"
+        }
+      ],
+      "Galaxy": [
+        {
+          "type": "mitre-attack-pattern",
+          "GalaxyCluster": [
+            {
+              "value": "LSASS Memory - T1003.001",
+              "meta": {
+                "external_id": "T1003.001"
+              }
+            }
+          ]
+        }
+      ],
+      "Tag": [
+        {
+          "name": "misp-galaxy:mitre-attack-pattern=\"Kerberoasting - T1558.003\""
+        }
+      ]
+    }
+  }
+}

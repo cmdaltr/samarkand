@@ -1,0 +1,264 @@
+{
+  "about": "Licence lines signed with the throwaway 'test' seed in THROWAWAY-TEST-SEED.key, which no product trusts. A product checks its own parser against them by trusting test_public_key in place of its PUBLIC_KEYS.",
+  "test_public_key": "7c9c1bef98d88444fc2a15fcfe06e5623835a8af955d001cb6e0cb18bd3365bf",
+  "other_public_key": "ff53d73acf5b695c9f40d070e2e02bd78cdda56d3d88242635d4b5f58e2c6b7e",
+  "free_seats_placeholder": "free",
+  "valid": [
+    {
+      "name": "pro",
+      "note": "Runs to the end of its expiry day, then 30 days' grace, then Free.",
+      "line": "ostraka-licence-1.eyJlZGl0aW9uIjoicHJvIiwiZXhwaXJlcyI6IjIwMjctMTEtMzAiLCJpc3N1ZWQiOiIyMDI2LTExLTExIiwibGljZW5jZV9pZCI6ImxpY18wMTIzNDU2Nzg5YWIiLCJsaWNlbnNlZSI6Ik5vcnRod2luZCBMdGQiLCJwcm9kdWN0Ijoib3N0cmFrYSIsInNlYXRzIjoxMH0.L5eJtVYD7-731gRa4MRYb05IPvxwPotXnMqJFpAojFVKFn_FVdRQUiL9NaD-YoMBR5Y3FRB5QpRw9--Qv6ANDQ",
+      "payload": {
+        "licence_id": "lic_0123456789ab",
+        "product": "ostraka",
+        "licensee": "Northwind Ltd",
+        "edition": "pro",
+        "seats": 10,
+        "issued": "2026-11-11",
+        "expires": "2027-11-30"
+      },
+      "standing": [
+        {
+          "at": "2026-11-11T12:00:00Z",
+          "state": "active",
+          "edition": "pro",
+          "seats": 10
+        },
+        {
+          "at": "2027-11-30T23:59:59Z",
+          "state": "active",
+          "edition": "pro",
+          "seats": 10
+        },
+        {
+          "at": "2027-12-01T00:00:00Z",
+          "state": "grace",
+          "edition": "pro",
+          "seats": 10
+        },
+        {
+          "at": "2027-12-30T23:59:59Z",
+          "state": "grace",
+          "edition": "pro",
+          "seats": 10
+        },
+        {
+          "at": "2027-12-31T00:00:00Z",
+          "state": "lapsed",
+          "edition": "free",
+          "seats": "free"
+        }
+      ]
+    },
+    {
+      "name": "services-perpetual-wildcard-pending",
+      "note": "Unlimited seats, no expiry, every feature, and a first day in the future.",
+      "line": "ostraka-licence-1.eyJlZGl0aW9uIjoic2VydmljZXMiLCJlbWFpbCI6Im9wc0Bub3J0aHdpbmQuZXhhbXBsZSIsImV4cGlyZXMiOm51bGwsImZlYXR1cmVzIjpbIioiXSwiaXNzdWVkIjoiMjAyNi0xMS0xMSIsImxpY2VuY2VfaWQiOiJsaWNfMDEyMzQ1Njc4OWFiIiwibGljZW5zZWUiOiJOb3J0aHdpbmQgTHRkIiwibm90X2JlZm9yZSI6IjIwMjYtMTItMDEiLCJwcm9kdWN0Ijoib3N0cmFrYSIsInNlYXRzIjpudWxsfQ.ON8f2YlmgBkZOtv-kDeMAYLLRJDLncsunS1vkSVhPVBLZ7JHo1TAYpWXhelILAmg8eYQkxTrxEM2o3JU_Y_SCw",
+      "payload": {
+        "licence_id": "lic_0123456789ab",
+        "product": "ostraka",
+        "licensee": "Northwind Ltd",
+        "edition": "services",
+        "seats": null,
+        "issued": "2026-11-11",
+        "expires": null,
+        "email": "ops@northwind.example",
+        "features": [
+          "*"
+        ],
+        "not_before": "2026-12-01"
+      },
+      "standing": [
+        {
+          "at": "2026-11-30T23:59:59Z",
+          "state": "pending",
+          "edition": "free",
+          "seats": "free"
+        },
+        {
+          "at": "2026-12-01T00:00:00Z",
+          "state": "active",
+          "edition": "services",
+          "seats": null
+        },
+        {
+          "at": "2099-01-01T00:00:00Z",
+          "state": "active",
+          "edition": "services",
+          "seats": null
+        }
+      ]
+    },
+    {
+      "name": "pro-with-an-extra-feature",
+      "note": "Pro plus brand-library and a feature id no product knows yet.",
+      "line": "ostraka-licence-1.eyJlZGl0aW9uIjoicHJvIiwiZXhwaXJlcyI6IjIwMjctMTEtMzAiLCJmZWF0dXJlcyI6WyJicmFuZC1saWJyYXJ5IiwiY3VzdG9tLWxhdGVyIl0sImlzc3VlZCI6IjIwMjYtMTEtMTEiLCJsaWNlbmNlX2lkIjoibGljXzAxMjM0NTY3ODlhYiIsImxpY2Vuc2VlIjoiTm9ydGh3aW5kIEx0ZCIsInByb2R1Y3QiOiJvc3RyYWthIiwic2VhdHMiOjEwfQ.RYDejpzgBhcAhpQ1oPqxIjRfXek6aK-e70g_v2g2r8PHZhZBmcTEt4Az2szOxEJOE_FK0lbpDWOVIYLNUEZnAA",
+      "payload": {
+        "licence_id": "lic_0123456789ab",
+        "product": "ostraka",
+        "licensee": "Northwind Ltd",
+        "edition": "pro",
+        "seats": 10,
+        "issued": "2026-11-11",
+        "expires": "2027-11-30",
+        "features": [
+          "brand-library",
+          "custom-later"
+        ]
+      },
+      "standing": [
+        {
+          "at": "2026-11-11T12:00:00Z",
+          "state": "active",
+          "edition": "pro",
+          "seats": 10
+        }
+      ]
+    },
+    {
+      "name": "services",
+      "note": "",
+      "line": "ostraka-licence-1.eyJlZGl0aW9uIjoic2VydmljZXMiLCJleHBpcmVzIjoiMjAyNy0wMS0zMSIsImlzc3VlZCI6IjIwMjYtMTEtMTEiLCJsaWNlbmNlX2lkIjoibGljXzAxMjM0NTY3ODlhYiIsImxpY2Vuc2VlIjoiTm9ydGh3aW5kIEx0ZCIsInByb2R1Y3QiOiJvc3RyYWthIiwic2VhdHMiOjI1fQ.IvvpFLP08J4yVsu92KIB3uP0iiFN7aZnbxEKRY0essmsB6uvT4N4dQA60V7v1Luo-9YXdk3JVv7csRUZDrd2Dg",
+      "payload": {
+        "licence_id": "lic_0123456789ab",
+        "product": "ostraka",
+        "licensee": "Northwind Ltd",
+        "edition": "services",
+        "seats": 25,
+        "issued": "2026-11-11",
+        "expires": "2027-01-31"
+      },
+      "standing": []
+    },
+    {
+      "name": "shikari-pro",
+      "note": "A good licence for shikari.",
+      "line": "shikari-licence-1.eyJlZGl0aW9uIjoicHJvIiwiZXhwaXJlcyI6IjIwMjctMTEtMzAiLCJpc3N1ZWQiOiIyMDI2LTExLTExIiwibGljZW5jZV9pZCI6ImxpY18wMTIzNDU2Nzg5YWIiLCJsaWNlbnNlZSI6Ik5vcnRod2luZCBMdGQiLCJwcm9kdWN0Ijoic2hpa2FyaSIsInNlYXRzIjoxMH0.CIdZoXsLlyvNhB9tqCE-plJI4a8flMNHKeE9SX9PAHAc0WctZm0l8aK_vNMeDwRRMLA6mN5pL_JRRrpwD-WxCQ",
+      "payload": {
+        "licence_id": "lic_0123456789ab",
+        "product": "shikari",
+        "licensee": "Northwind Ltd",
+        "edition": "pro",
+        "seats": 10,
+        "issued": "2026-11-11",
+        "expires": "2027-11-30"
+      },
+      "standing": []
+    },
+    {
+      "name": "rowanholt-pro",
+      "note": "A good licence for rowanholt.",
+      "line": "rowanholt-licence-1.eyJlZGl0aW9uIjoicHJvIiwiZXhwaXJlcyI6IjIwMjctMTEtMzAiLCJpc3N1ZWQiOiIyMDI2LTExLTExIiwibGljZW5jZV9pZCI6ImxpY18wMTIzNDU2Nzg5YWIiLCJsaWNlbnNlZSI6Ik5vcnRod2luZCBMdGQiLCJwcm9kdWN0Ijoicm93YW5ob2x0Iiwic2VhdHMiOjEwfQ.PBscM5uyJ4preTKZmL3Ej9kTmlOdJDgC1e-CbnoafE4bllZ0_P_aSITqeEjEI_mfyW9dOAOUJ0pai5Uv9thFAg",
+      "payload": {
+        "licence_id": "lic_0123456789ab",
+        "product": "rowanholt",
+        "licensee": "Northwind Ltd",
+        "edition": "pro",
+        "seats": 10,
+        "issued": "2026-11-11",
+        "expires": "2027-11-30"
+      },
+      "standing": []
+    }
+  ],
+  "refused": [
+    {
+      "name": "tampered",
+      "note": "The seats edited after signing.",
+      "line": "ostraka-licence-1.eyJlZGl0aW9uIjoicHJvIiwiZXhwaXJlcyI6IjIwMjctMTEtMzAiLCJpc3N1ZWQiOiIyMDI2LTExLTExIiwibGljZW5jZV9pZCI6ImxpY18wMTIzNDU2Nzg5YWIiLCJsaWNlbnNlZSI6Ik5vcnRod2luZCBMdGQiLCJwcm9kdWN0Ijoib3N0cmFrYSIsInNlYXRzIjo1MDB9.L5eJtVYD7-731gRa4MRYb05IPvxwPotXnMqJFpAojFVKFn_FVdRQUiL9NaD-YoMBR5Y3FRB5QpRw9--Qv6ANDQ",
+      "product": "ostraka",
+      "code": "bad-signature"
+    },
+    {
+      "name": "another-key",
+      "note": "Signed by a key the product doesn't trust.",
+      "line": "ostraka-licence-1.eyJlZGl0aW9uIjoicHJvIiwiZXhwaXJlcyI6IjIwMjctMTEtMzAiLCJpc3N1ZWQiOiIyMDI2LTExLTExIiwibGljZW5jZV9pZCI6ImxpY18wMTIzNDU2Nzg5YWIiLCJsaWNlbnNlZSI6Ik5vcnRod2luZCBMdGQiLCJwcm9kdWN0Ijoib3N0cmFrYSIsInNlYXRzIjoxMH0.ex5be7JcmwtiJBBfw6LBQl7MKZrWJuMNDcND3h4Ey8SSEBSiWFiOZVkDuMWbYyJ1eCJEaQ5wKkRCjFQ5K_lSDg",
+      "product": "ostraka",
+      "code": "bad-signature"
+    },
+    {
+      "name": "another-product",
+      "note": "shikari-licence-1.",
+      "line": "shikari-licence-1.eyJlZGl0aW9uIjoicHJvIiwiZXhwaXJlcyI6IjIwMjctMTEtMzAiLCJpc3N1ZWQiOiIyMDI2LTExLTExIiwibGljZW5jZV9pZCI6ImxpY18wMTIzNDU2Nzg5YWIiLCJsaWNlbnNlZSI6Ik5vcnRod2luZCBMdGQiLCJwcm9kdWN0Ijoic2hpa2FyaSIsInNlYXRzIjoxMH0.CIdZoXsLlyvNhB9tqCE-plJI4a8flMNHKeE9SX9PAHAc0WctZm0l8aK_vNMeDwRRMLA6mN5pL_JRRrpwD-WxCQ",
+      "product": "ostraka",
+      "code": "other-product"
+    },
+    {
+      "name": "another-product-in-the-payload",
+      "note": "An ostraka-licence-1 line whose payload names shikari.",
+      "line": "ostraka-licence-1.eyJlZGl0aW9uIjoicHJvIiwiZXhwaXJlcyI6IjIwMjctMTEtMzAiLCJpc3N1ZWQiOiIyMDI2LTExLTExIiwibGljZW5jZV9pZCI6ImxpY18wMTIzNDU2Nzg5YWIiLCJsaWNlbnNlZSI6Ik5vcnRod2luZCBMdGQiLCJwcm9kdWN0Ijoic2hpa2FyaSIsInNlYXRzIjoxMH0.dn1D2u5ENUeAPNrFfyByt6EXOHVqEOk8_xfk26NFqgCzz3ASQ15MRkObZcsFGI9ttF_EX376adFQZFcZpgmYCA",
+      "product": "ostraka",
+      "code": "other-product"
+    },
+    {
+      "name": "another-format-version",
+      "note": "A format this version doesn't read.",
+      "line": "ostraka-licence-2.eyJlZGl0aW9uIjoicHJvIiwiZXhwaXJlcyI6IjIwMjctMTEtMzAiLCJpc3N1ZWQiOiIyMDI2LTExLTExIiwibGljZW5jZV9pZCI6ImxpY18wMTIzNDU2Nzg5YWIiLCJsaWNlbnNlZSI6Ik5vcnRod2luZCBMdGQiLCJwcm9kdWN0Ijoib3N0cmFrYSIsInNlYXRzIjoxMH0.eDGjplC624ZcsaNaZ0WI7dyv2KtBoKomc9NdUE7XyyxI6Odg9K5_n64ASIIQ0k_xOfNxoahVWwOEQq6wqQINAQ",
+      "product": "ostraka",
+      "code": "not-a-licence"
+    },
+    {
+      "name": "free-edition",
+      "note": "",
+      "line": "ostraka-licence-1.eyJlZGl0aW9uIjoiZnJlZSIsImV4cGlyZXMiOiIyMDI3LTExLTMwIiwiaXNzdWVkIjoiMjAyNi0xMS0xMSIsImxpY2VuY2VfaWQiOiJsaWNfMDEyMzQ1Njc4OWFiIiwibGljZW5zZWUiOiJOb3J0aHdpbmQgTHRkIiwicHJvZHVjdCI6Im9zdHJha2EiLCJzZWF0cyI6MTB9.9kESOEeHuZLKa7LKG18Vm0DV29YxnLTJM_Hm0hYkVwq3tpmnQnghy0YWawnpS-Ox-UZ7kpoEDqKfy4aln05yCQ",
+      "product": "ostraka",
+      "code": "grants-nothing"
+    },
+    {
+      "name": "no-seats",
+      "note": "",
+      "line": "ostraka-licence-1.eyJlZGl0aW9uIjoicHJvIiwiZXhwaXJlcyI6IjIwMjctMTEtMzAiLCJpc3N1ZWQiOiIyMDI2LTExLTExIiwibGljZW5jZV9pZCI6ImxpY18wMTIzNDU2Nzg5YWIiLCJsaWNlbnNlZSI6Ik5vcnRod2luZCBMdGQiLCJwcm9kdWN0Ijoib3N0cmFrYSIsInNlYXRzIjowfQ.w3crxKi0GvCekkNwtAMyEiiB5uuQewRhXAuS_Etqk0iGugigSOEevgMQjG6v6_9DtAH-9u8WUBCA_MBLvmUkBw",
+      "product": "ostraka",
+      "code": "grants-nothing"
+    },
+    {
+      "name": "missing-field",
+      "note": "No issued date: from a newer format.",
+      "line": "ostraka-licence-1.eyJlZGl0aW9uIjoicHJvIiwiZXhwaXJlcyI6IjIwMjctMTEtMzAiLCJsaWNlbmNlX2lkIjoibGljXzAxMjM0NTY3ODlhYiIsImxpY2Vuc2VlIjoiTm9ydGh3aW5kIEx0ZCIsInByb2R1Y3QiOiJvc3RyYWthIiwic2VhdHMiOjEwfQ.vwQmEUa-2M2wecUgPnZ8I0EC45Ceayj-47byJJy8r4Sl7azkQzNkPa3QkXl0175J4IWL16JdxN1Z7tDC3urxAw",
+      "product": "ostraka",
+      "code": "unreadable"
+    },
+    {
+      "name": "unknown-edition",
+      "note": "",
+      "line": "ostraka-licence-1.eyJlZGl0aW9uIjoiZW50ZXJwcmlzZSIsImV4cGlyZXMiOiIyMDI3LTExLTMwIiwiaXNzdWVkIjoiMjAyNi0xMS0xMSIsImxpY2VuY2VfaWQiOiJsaWNfMDEyMzQ1Njc4OWFiIiwibGljZW5zZWUiOiJOb3J0aHdpbmQgTHRkIiwicHJvZHVjdCI6Im9zdHJha2EiLCJzZWF0cyI6MTB9.8wcx9aFDYbeGnGWOlSRBg53oXG38Vdgzhkg5dyFcY2o3TSOLfff2v0fGdt7OEWyGEWZUHIiW_hEZXEeELjT8Bg",
+      "product": "ostraka",
+      "code": "unreadable"
+    },
+    {
+      "name": "payload-not-json",
+      "note": "",
+      "line": "ostraka-licence-1.bm90IGpzb24.lIslfAp_gjZciYDOXz6YMu_6eIkOEpEWGjIQk-7FM-DSKtWUFpPti9nMIGJotr_HBSB5w5KeNMNzp-bxuXL_CQ",
+      "product": "ostraka",
+      "code": "damaged"
+    },
+    {
+      "name": "not-a-licence-0",
+      "note": "",
+      "line": "",
+      "product": "ostraka",
+      "code": "not-a-licence"
+    },
+    {
+      "name": "not-a-licence-1",
+      "note": "",
+      "line": "hello",
+      "product": "ostraka",
+      "code": "not-a-licence"
+    },
+    {
+      "name": "not-a-licence-2",
+      "note": "",
+      "line": "ostraka-licence-1.!!!.???",
+      "product": "ostraka",
+      "code": "damaged"
+    },
+    {
+      "name": "not-a-licence-3",
+      "note": "",
+      "line": "ostraka-licence-1.a",
+      "product": "ostraka",
+      "code": "not-a-licence"
+    }
+  ]
+}
