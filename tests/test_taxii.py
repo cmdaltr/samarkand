@@ -155,3 +155,24 @@ def test_against_a_real_server():
         "/api1/collections/c1/objects/?limit=1000&next=p2",
     ]
     assert all(s[1] == "Basic dTpw" and s[2] == taxii.ACCEPT for s in Taxii.seen)
+
+
+@pytest.mark.parametrize(
+    "server", [Server([], status=401), Server([], status=500), Server([], body=b"<html>")], ids=str
+)
+def test_a_taxii_problem_is_an_oserror_with_its_message(server):
+    # Products answer an OSError with 502 (Rowanholt's threat_intel_routes), so they need no wrapper
+    with pytest.raises(OSError) as raised:
+        taxii.fetch_objects(COLLECTION, request=server)
+    problem = raised.value
+    assert isinstance(problem, taxii.TaxiiProblem) and isinstance(problem, Exception)
+    assert problem.errno is None and problem.args == (str(problem),) and str(problem).startswith("The TAXII")
+
+
+def test_an_unreachable_server_is_still_one_taxii_problem_not_the_raw_oserror():
+    def down(*args, **kwargs):
+        raise TimeoutError("timed out")
+
+    with pytest.raises(taxii.TaxiiProblem, match="Couldn't reach the TAXII server: timed out") as raised:
+        taxii.collection_info(COLLECTION, request=down)
+    assert isinstance(raised.value.__cause__, TimeoutError)

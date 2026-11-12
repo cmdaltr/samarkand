@@ -29,8 +29,12 @@ USER_AGENT = "TAXII 2.1 client"
 Request = Callable[..., _http.Response]
 
 
-class TaxiiProblem(Exception):
-    """The TAXII server refused or couldn't be reached, with a reason an admin can act on."""
+class TaxiiProblem(OSError):
+    """The TAXII server refused or couldn't be reached, with a reason an admin can act on (its message).
+
+    An OSError, as the failure to reach a server it often stands for is, so a product's `except
+    OSError` (Rowanholt's routes answer 502 to one) catches it without re-raising. Raised with the
+    message alone, so `str()` is the message and `errno` is None."""
 
 
 def _headers(username: str, password: str, user_agent: str) -> dict[str, str]:
