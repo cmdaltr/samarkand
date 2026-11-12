@@ -3,7 +3,7 @@
 Products pin an exact version. Every version keeps the wire formats and the test vectors of the one
 before unless its entry says otherwise.
 
-## 0.1.1 (unreleased)
+## 0.1.1 (12 November 2026)
 
 Additions the products' switch-overs asked for. Everything 0.1.0 callers do behaves as it did.
 
