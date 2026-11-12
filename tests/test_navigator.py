@@ -114,3 +114,23 @@ def test_scores_and_a_gradient_for_an_assessment_layer():
     (entry,) = layer["techniques"]
     assert list(entry)[:3] == ["techniqueID", "score", "color"] and entry["score"] == 4
     assert layer["gradient"] == gradient and layer["gradient"] is not gradient
+
+
+def test_the_fallback_platforms_are_the_ones_the_products_data_names():
+    # Rowanholt's pinned release gives these, and Ostraka's and Shikari's hard-coded copies match them
+    assert N.PLATFORMS_RELEASE == RH["attack_version"]
+    assert list(N.PLATFORMS[N.ENTERPRISE]) == RH["platforms"] == OST["platforms"]
+    assert list(N.PLATFORMS[N.MOBILE]) == RH["mobile_platforms"]
+    assert all(list(p) == sorted(p) for p in N.PLATFORMS.values())
+
+
+def test_a_layer_from_the_fallback_platforms_is_rowanholts():
+    techniques = {tid: tuple(v) for tid, v in RH["techniques"].items()}
+    plain = N.build_layer(
+        "CASE-1",
+        N.ENTERPRISE,
+        techniques,
+        attack_version=RH["attack_version"],
+        platforms=N.PLATFORMS[N.ENTERPRISE],
+    )
+    assert json.dumps(plain) == json.dumps(RH["layers"]["plain"])

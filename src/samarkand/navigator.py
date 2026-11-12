@@ -7,7 +7,8 @@ of sight. With no tactic given, Navigator marks a technique under every tactic i
 whose sub-techniques are marked opens to show them.
 
 `release_of` reads the version and platforms from ATT&CK's own STIX data, for a product that has
-the bundle but no lookup of its own.
+the bundle but no lookup of its own. `PLATFORMS` is the list for a product whose ATT&CK data names
+none (Ostraka's bundled attack.json) or that has no data loaded at all.
 """
 
 from __future__ import annotations
@@ -29,6 +30,31 @@ CONFIRMED_COLOUR = "#ed5565"
 LEAD_COLOUR = "#ffce54"
 COMMENT_LIMIT = 1000
 GRADIENT = {"colors": ["#ff6666ff", "#ffe766ff", "#8ec843ff"], "minValue": 0, "maxValue": 100}
+
+# Every platform each domain's current techniques name in ATT&CK PLATFORMS_RELEASE (Rowanholt's
+# pinned attack_techniques.csv, read on 12 November 2026), for a product whose ATT&CK data has no
+# platforms. Platforms change far less often than techniques, and a layer's platforms only filter
+# what Navigator shows, so a list a release behind hides nothing it shouldn't; data that names them
+# (`release_of`) is still the better source. There is deliberately no fallback ATT&CK version: a
+# layer's `versions.attack` tells Navigator which release to draw, and naming one the product
+# doesn't hold would be a claim samarkand can't check. ICS is left out: no product has its data.
+PLATFORMS_RELEASE = "20.1"
+PLATFORMS: dict[str, tuple[str, ...]] = {
+    ENTERPRISE: (
+        "Containers",
+        "ESXi",
+        "IaaS",
+        "Identity Provider",
+        "Linux",
+        "Network Devices",
+        "Office Suite",
+        "PRE",
+        "SaaS",
+        "Windows",
+        "macOS",
+    ),
+    MOBILE: ("Android", "iOS"),
+}
 
 
 @dataclass(frozen=True)
