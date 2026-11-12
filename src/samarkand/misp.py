@@ -22,7 +22,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from samarkand import _http
-from samarkand.stix import Kind
+from samarkand.stix import Kind, digest_of
 
 log = logging.getLogger(__name__)
 
@@ -62,7 +62,6 @@ ATTRIBUTE_TYPES: dict[Kind, tuple[str, str]] = {
 # Types an IDS can't match on, so never to_ids
 NOT_FOR_IDS = frozenset({"text", "target-user", "phone-number", "vulnerability", "comment", "link"})
 _CERT_TYPES = {32: "x509-fingerprint-md5", 40: "x509-fingerprint-sha1", 64: "x509-fingerprint-sha256"}
-_HASH_TYPES = {32: "md5", 40: "sha1", 64: "sha256", 128: "sha512"}
 
 # MISP attribute type -> Kind, for reading
 KINDS: dict[str, Kind] = {
@@ -155,11 +154,10 @@ class Attribute:
 
 
 def hash_type(value: str) -> str:
-    """md5, sha1, sha256 or sha512 by a hex digest's length; sha256 for anything else."""
-    v = value.strip()
-    if v and all(c in "0123456789abcdefABCDEF" for c in v):
-        return _HASH_TYPES.get(len(v), "sha256")
-    return "sha256"
+    """md5, sha1, sha256 or sha512 by a hex digest's length (`samarkand.stix.DIGESTS`, the table STIX
+    uses too); sha256 for anything else."""
+    found = digest_of(value)
+    return found.misp if found else "sha256"
 
 
 def attribute_type(kind: Kind | str, value: str) -> tuple[str, str, str] | None:

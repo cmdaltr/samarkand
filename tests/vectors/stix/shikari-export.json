@@ -1,0 +1,470 @@
+{
+  "about": "Shikari's run_to_stix (shikari/parsers/stix_export.py at 8c89a897, on samarkand 0.1.0) for misp/shikari-run.json's detections, TLP:AMBER, now 2026-11-11T12:00:00Z, captured on 12 November 2026. It pops the report bundle() puts last, appends its intrusion-set, uses relationships and x-shikari-detection objects, extends object_refs and puts the report back.",
+  "now": "2026-11-11T12:00:00+00:00",
+  "tlp": "amber",
+  "bundle": {
+    "type": "bundle",
+    "id": "bundle--c9c6d986-2dce-589f-8b49-58626c128835",
+    "objects": [
+      {
+        "type": "identity",
+        "spec_version": "2.1",
+        "id": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "name": "Shikari",
+        "identity_class": "organization"
+      },
+      {
+        "type": "marking-definition",
+        "spec_version": "2.1",
+        "id": "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421",
+        "created": "2022-10-01T00:00:00.000Z",
+        "name": "TLP:AMBER",
+        "extensions": {
+          "extension-definition--60a3c5c5-0d10-413e-aab3-9e08dde9e88d": {
+            "extension_type": "property-extension",
+            "tlp_2_0": "amber"
+          }
+        }
+      },
+      {
+        "type": "attack-pattern",
+        "id": "attack-pattern--e31e80ce-ecd7-51b6-906b-ac9e03fae4a2",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "PowerShell",
+        "external_references": [
+          {
+            "source_name": "mitre-attack",
+            "external_id": "T1059.001",
+            "url": "https://attack.mitre.org/techniques/T1059/001/"
+          }
+        ]
+      },
+      {
+        "type": "attack-pattern",
+        "id": "attack-pattern--b095d180-b149-57c5-8b07-48790ba5f292",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "Windows Service",
+        "external_references": [
+          {
+            "source_name": "mitre-attack",
+            "external_id": "T1543.003",
+            "url": "https://attack.mitre.org/techniques/T1543/003/"
+          }
+        ]
+      },
+      {
+        "type": "domain-name",
+        "spec_version": "2.1",
+        "id": "domain-name--69228563-c8d2-54ae-aeca-5f4134cb59aa",
+        "value": "evil.example",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ]
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--bcb32fd2-ccc7-5fc6-b6d5-9eae6981490e",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "evil.example",
+        "indicator_types": [
+          "malicious-activity"
+        ],
+        "pattern": "[domain-name:value = 'evil.example']",
+        "pattern_type": "stix",
+        "pattern_version": "2.1",
+        "valid_from": "2026-11-11T12:00:00.000Z"
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--38b66a09-1441-5e3d-b9b6-bd058123bd6f",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "indicates",
+        "source_ref": "indicator--bcb32fd2-ccc7-5fc6-b6d5-9eae6981490e",
+        "target_ref": "attack-pattern--e31e80ce-ecd7-51b6-906b-ac9e03fae4a2"
+      },
+      {
+        "type": "ipv4-addr",
+        "spec_version": "2.1",
+        "id": "ipv4-addr--826fe3cb-56b0-5620-9d30-4c17ed7b24e3",
+        "value": "203.0.113.5",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ]
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--e8111607-770d-5a8e-8397-90cdbe9af923",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "203.0.113.5",
+        "indicator_types": [
+          "malicious-activity"
+        ],
+        "pattern": "[ipv4-addr:value = '203.0.113.5']",
+        "pattern_type": "stix",
+        "pattern_version": "2.1",
+        "valid_from": "2026-11-11T12:00:00.000Z"
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--ae8c6174-6d12-525a-99ac-ccfef16094e2",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "indicates",
+        "source_ref": "indicator--e8111607-770d-5a8e-8397-90cdbe9af923",
+        "target_ref": "attack-pattern--e31e80ce-ecd7-51b6-906b-ac9e03fae4a2"
+      },
+      {
+        "type": "file",
+        "spec_version": "2.1",
+        "id": "file--75cb38d5-2055-5354-b75a-8299a2d670b5",
+        "hashes": {
+          "SHA-256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ]
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--7a22c958-3394-5754-9f86-2f927db6acb7",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "indicator_types": [
+          "malicious-activity"
+        ],
+        "pattern": "[file:hashes.'SHA-256' = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa']",
+        "pattern_type": "stix",
+        "pattern_version": "2.1",
+        "valid_from": "2026-11-11T12:00:00.000Z"
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--84d49875-cf0f-59c0-9feb-f885ce148ede",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "indicates",
+        "source_ref": "indicator--7a22c958-3394-5754-9f86-2f927db6acb7",
+        "target_ref": "attack-pattern--e31e80ce-ecd7-51b6-906b-ac9e03fae4a2"
+      },
+      {
+        "type": "file",
+        "spec_version": "2.1",
+        "id": "file--99577d3c-8f1c-5d3e-a1fb-3d94319bb42e",
+        "name": "beacon.exe",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ]
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--d802f760-28fd-5917-ba1c-46ecc3f5b4d7",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "beacon.exe",
+        "indicator_types": [
+          "malicious-activity"
+        ],
+        "pattern": "[file:name = 'beacon.exe']",
+        "pattern_type": "stix",
+        "pattern_version": "2.1",
+        "valid_from": "2026-11-11T12:00:00.000Z"
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--a8cac869-2702-5392-b5bd-ecd83ae24d67",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "indicates",
+        "source_ref": "indicator--d802f760-28fd-5917-ba1c-46ecc3f5b4d7",
+        "target_ref": "attack-pattern--e31e80ce-ecd7-51b6-906b-ac9e03fae4a2"
+      },
+      {
+        "type": "file",
+        "spec_version": "2.1",
+        "id": "file--6d4d744d-fc77-51a5-b277-5087c69fff92",
+        "name": "EvilSvc",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ]
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--174ab094-13d3-5a1c-a6a6-6c38ef2222eb",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "EvilSvc",
+        "indicator_types": [
+          "malicious-activity"
+        ],
+        "pattern": "[process:image_ref.name = 'EvilSvc']",
+        "pattern_type": "stix",
+        "pattern_version": "2.1",
+        "valid_from": "2026-11-11T12:00:00.000Z"
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--feacbbb6-5725-5502-a098-c80fe49aae2c",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "indicates",
+        "source_ref": "indicator--174ab094-13d3-5a1c-a6a6-6c38ef2222eb",
+        "target_ref": "attack-pattern--b095d180-b149-57c5-8b07-48790ba5f292"
+      },
+      {
+        "type": "windows-registry-key",
+        "spec_version": "2.1",
+        "id": "windows-registry-key--21186ed4-2e4a-515d-8289-9d30e9baead3",
+        "key": "HKLM\\System\\Foo",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ]
+      },
+      {
+        "type": "indicator",
+        "id": "indicator--099b1279-4536-5345-92ce-62f25469c91d",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "HKLM\\System\\Foo",
+        "indicator_types": [
+          "malicious-activity"
+        ],
+        "pattern": "[windows-registry-key:key = 'HKLM\\\\System\\\\Foo']",
+        "pattern_type": "stix",
+        "pattern_version": "2.1",
+        "valid_from": "2026-11-11T12:00:00.000Z"
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--0db2bf62-2f6e-5656-9af5-46783ff15923",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "indicates",
+        "source_ref": "indicator--099b1279-4536-5345-92ce-62f25469c91d",
+        "target_ref": "attack-pattern--b095d180-b149-57c5-8b07-48790ba5f292"
+      },
+      {
+        "type": "intrusion-set",
+        "id": "intrusion-set--9f7bddd4-da7a-5379-b347-805cb4b74d48",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "Scattered Spider",
+        "description": "A run's description"
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--bd0c7bfc-04e8-56f7-a60c-7528ae20b16e",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "uses",
+        "source_ref": "intrusion-set--9f7bddd4-da7a-5379-b347-805cb4b74d48",
+        "target_ref": "attack-pattern--e31e80ce-ecd7-51b6-906b-ac9e03fae4a2"
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--1c72e445-18b6-53b2-9fc3-394c6f01f457",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "uses",
+        "source_ref": "intrusion-set--9f7bddd4-da7a-5379-b347-805cb4b74d48",
+        "target_ref": "attack-pattern--b095d180-b149-57c5-8b07-48790ba5f292"
+      },
+      {
+        "type": "x-shikari-detection",
+        "id": "x-shikari-detection--df1c7466-8f95-5eba-b978-277da72a359e",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "PowerShell download cradle",
+        "siem": "mde",
+        "query": "",
+        "technique_id": "T1059.001"
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--c76dd84c-d164-5917-b98f-c14481063dc0",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "detects",
+        "source_ref": "x-shikari-detection--df1c7466-8f95-5eba-b978-277da72a359e",
+        "target_ref": "attack-pattern--e31e80ce-ecd7-51b6-906b-ac9e03fae4a2"
+      },
+      {
+        "type": "x-shikari-detection",
+        "id": "x-shikari-detection--1dfe0030-a2f0-59e5-b845-8f32864f9f91",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "Service install",
+        "siem": "secops",
+        "query": "",
+        "technique_id": "T1543.003"
+      },
+      {
+        "type": "relationship",
+        "id": "relationship--1a08a23b-3199-5af2-90de-75f0c8a5f22f",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "relationship_type": "detects",
+        "source_ref": "x-shikari-detection--1dfe0030-a2f0-59e5-b845-8f32864f9f91",
+        "target_ref": "attack-pattern--b095d180-b149-57c5-8b07-48790ba5f292"
+      },
+      {
+        "type": "report",
+        "id": "report--9f7bddd4-da7a-5379-b347-805cb4b74d48",
+        "spec_version": "2.1",
+        "created_by_ref": "identity--e0e820c5-68d5-5d02-b5b7-00ee4a8a2b8b",
+        "created": "2026-11-11T12:00:00.000Z",
+        "modified": "2026-11-11T12:00:00.000Z",
+        "object_marking_refs": [
+          "marking-definition--55d920b0-5e8b-4f79-9ee9-91f868d9b421"
+        ],
+        "name": "Shikari run: Scattered Spider",
+        "description": "A run's description",
+        "report_types": [
+          "threat-report"
+        ],
+        "published": "2026-11-11T12:00:00.000Z",
+        "object_refs": [
+          "attack-pattern--e31e80ce-ecd7-51b6-906b-ac9e03fae4a2",
+          "attack-pattern--b095d180-b149-57c5-8b07-48790ba5f292",
+          "domain-name--69228563-c8d2-54ae-aeca-5f4134cb59aa",
+          "indicator--bcb32fd2-ccc7-5fc6-b6d5-9eae6981490e",
+          "relationship--38b66a09-1441-5e3d-b9b6-bd058123bd6f",
+          "ipv4-addr--826fe3cb-56b0-5620-9d30-4c17ed7b24e3",
+          "indicator--e8111607-770d-5a8e-8397-90cdbe9af923",
+          "relationship--ae8c6174-6d12-525a-99ac-ccfef16094e2",
+          "file--75cb38d5-2055-5354-b75a-8299a2d670b5",
+          "indicator--7a22c958-3394-5754-9f86-2f927db6acb7",
+          "relationship--84d49875-cf0f-59c0-9feb-f885ce148ede",
+          "file--99577d3c-8f1c-5d3e-a1fb-3d94319bb42e",
+          "indicator--d802f760-28fd-5917-ba1c-46ecc3f5b4d7",
+          "relationship--a8cac869-2702-5392-b5bd-ecd83ae24d67",
+          "file--6d4d744d-fc77-51a5-b277-5087c69fff92",
+          "indicator--174ab094-13d3-5a1c-a6a6-6c38ef2222eb",
+          "relationship--feacbbb6-5725-5502-a098-c80fe49aae2c",
+          "windows-registry-key--21186ed4-2e4a-515d-8289-9d30e9baead3",
+          "indicator--099b1279-4536-5345-92ce-62f25469c91d",
+          "relationship--0db2bf62-2f6e-5656-9af5-46783ff15923",
+          "intrusion-set--9f7bddd4-da7a-5379-b347-805cb4b74d48",
+          "relationship--bd0c7bfc-04e8-56f7-a60c-7528ae20b16e",
+          "relationship--1c72e445-18b6-53b2-9fc3-394c6f01f457",
+          "x-shikari-detection--df1c7466-8f95-5eba-b978-277da72a359e",
+          "relationship--c76dd84c-d164-5917-b98f-c14481063dc0",
+          "x-shikari-detection--1dfe0030-a2f0-59e5-b845-8f32864f9f91",
+          "relationship--1a08a23b-3199-5af2-90de-75f0c8a5f22f"
+        ]
+      }
+    ]
+  }
+}

@@ -348,3 +348,257 @@ def test_a_built_bundle_reads_back():
     ip = next(i for i in parsed.indicators if i.object_type == "indicator" and i.value == "203.0.113.45")
     assert [t.id for t in ip.techniques] == ["T1071.001"] and ip.confidence == 85
     assert parsed.reports[0].name == "CASE-7: beaconing"
+
+
+# ---- 0.1.1: a product's own objects in a bundle ---------------------------------------------------
+
+SHIKARI_NAMESPACE = uuid.UUID("ad90fcf4-f2c8-4490-bf60-9d46f7697c62")  # shikari/parsers/stix_export.py
+SHIKARI_HASHES = {32: stix.Kind.FILE_HASH_MD5, 40: stix.Kind.FILE_HASH_SHA1, 64: stix.Kind.FILE_HASH_SHA256,
+                  128: stix.Kind.FILE_HASH_SHA512}  # fmt: skip
+SHIKARI_KINDS = {
+    "ip": stix.Kind.IP_ADDRESS,
+    "domain": stix.Kind.DOMAIN,
+    "file": stix.Kind.FILE_NAME,
+    "cmd": stix.Kind.PROCESS_COMMAND,
+    "reg": stix.Kind.REGISTRY_KEY,
+    "sw": stix.Kind.PROCESS_NAME,
+}
+
+
+def shikari_export(run: dict, now: datetime) -> tuple[stix.Export, dict]:
+    """Shikari's run_to_stix up to bundle(): the Export, and its techniques' names by id."""
+    techniques, iocs = {}, {}
+    for det in run["detections"]:
+        tid = det.get("technique_id") or ""
+        if tid and tid not in techniques:
+            techniques[tid] = det.get("technique_name") or ""
+        for ioc_kind, values in det["indicators"].items():
+            for value in values:
+                if ioc_kind == "hash":
+                    found = stix.digest_of(value)
+                    kind = found.kind if found else stix.Kind.FILE_HASH_SHA256
+                else:
+                    kind = SHIKARI_KINDS.get(ioc_kind)
+                if kind is not None:
+                    linked = iocs.setdefault((kind, value), [])
+                    if tid and tid not in linked:
+                        linked.append(tid)
+    export = stix.Export(
+        namespace=SHIKARI_NAMESPACE,
+        key=run["group"],
+        producer="Shikari",
+        tlp="amber",
+        created=now,
+        name=f"Shikari run: {run['group']}",
+        description=run["description"],
+        techniques=tuple(stix.ExportTechnique(tid, name) for tid, name in techniques.items()),
+        indicators=tuple(
+            stix.ExportIndicator(
+                key=f"{kind.value}|{value}", kind=kind, value=value, techniques=tuple(linked)
+            )
+            for (kind, value), linked in iocs.items()
+        ),
+    )
+    return export, techniques
+
+
+def shikari_own(run: dict, export: stix.Export, techniques: dict, now: datetime) -> list[dict]:
+    """Shikari's intrusion-set, `uses` relationships and detections, from the Export's refs alone."""
+    key, ns = export.key, export.namespace
+    props = stix.common(export.identity_ref, now, now, export.tlp)
+    patterns = {tid: export.attack_pattern_ref(tid) for tid in techniques}
+    intrusion = {"type": "intrusion-set", "id": stix.object_id(ns, "intrusion-set", key), **props,
+                 "name": run["group"], "description": run["description"]}  # fmt: skip
+    own = [intrusion]
+    for tid, pattern in patterns.items():
+        rel = stix.object_id(ns, "relationship", key, "uses", tid)
+        own.append(stix.relationship_object(rel, props, "uses", intrusion["id"], pattern))
+    seen: dict = {}
+    for det in run["detections"]:
+        tid, name, siem = det["technique_id"], det["name"], det["siem"]
+        n = seen[(name, siem, tid)] = seen.get((name, siem, tid), 0) + 1
+        detection = {
+            "type": "x-shikari-detection",
+            "id": stix.object_id(ns, "x-shikari-detection", key, name, siem, tid, n),
+            **props,
+            "name": name,
+            "siem": siem,
+            "query": det.get("query") or "",
+            "technique_id": tid,
+        }
+        own.append(detection)
+        if tid in patterns:
+            rel = stix.object_id(ns, "relationship", key, "detects", detection["id"])
+            own.append(stix.relationship_object(rel, props, "detects", detection["id"], patterns[tid]))
+    return own
+
+
+def test_shikaris_export_through_extra_objects_is_byte_for_byte_what_it_makes_today():
+    data = vector("stix/shikari-export.json")
+    run = vector("misp/shikari-run.json")
+    now = datetime.fromisoformat(data["now"])
+    export, techniques = shikari_export(run, now)
+    built = stix.bundle(export, now, extra_objects=shikari_own(run, export, techniques, now))
+    assert json.dumps(built, indent=2) == json.dumps(data["bundle"], indent=2)
+
+
+def test_the_export_names_the_ids_bundle_gives():
+    data = vector("stix/shikari-export.json")
+    export, techniques = shikari_export(vector("misp/shikari-run.json"), datetime.fromisoformat(data["now"]))
+    plain = stix.bundle(export, NOW)
+    assert plain["objects"][0]["id"] == export.identity_ref
+    patterns = {o["external_references"][0]["external_id"]: o["id"] for o in plain["objects"]
+                if o["type"] == "attack-pattern"}  # fmt: skip
+    assert patterns == {tid: export.attack_pattern_ref(tid) for tid in techniques}
+    assert export.attack_pattern_ref("T1059.001") == stix.object_id(
+        SHIKARI_NAMESPACE, "attack-pattern", "mitre-attack", "T1059.001"
+    )
+
+
+def test_no_extra_objects_is_the_bundle_it_always_was():
+    assert stix.bundle(export(), NOW) == stix.bundle(export(), NOW, extra_objects=())
+
+
+def test_extra_objects_go_before_the_report_which_names_them_and_stays_last():
+    ex = export()
+    props = stix.common(ex.identity_ref, T0, NOW, ex.tlp)
+    actor = {
+        "type": "intrusion-set",
+        "id": stix.object_id(NS, "intrusion-set", "Big Bad"),
+        **props,
+        "name": "Big Bad",
+    }
+    note = {"type": "note", "id": stix.object_id(NS, "note", "1"), **props, "content": "x",
+            "object_refs": [actor["id"]]}  # fmt: skip
+    plain = stix.bundle(ex, NOW)
+    built = stix.bundle(ex, NOW, extra_objects=iter([actor, note]))  # any iterable
+    assert built["objects"][:-1] == plain["objects"][:-1] + [actor, note]
+    report = built["objects"][-1]
+    assert report["type"] == "report"
+    assert report["object_refs"] == plain["objects"][-1]["object_refs"] + [actor["id"], note["id"]]
+    check_bundle(built)
+    parsed = stix.parse(built)
+    assert [g.name for g in parsed.groups] == ["Big Bad"] and parsed.reports[0].position == len(
+        built["objects"]
+    ) - 1
+
+
+def test_an_extra_marking_or_identity_isnt_a_report_ref_as_the_standard_ones_arent():
+    ex = export()
+    second = stix.identity_object(stix.object_id(NS, "identity", "Other"), "Other", T0, NOW)
+    built = stix.bundle(ex, NOW, extra_objects=[second, stix.tlp_marking("red")])
+    assert second["id"] not in built["objects"][-1]["object_refs"]
+    assert stix.TLP_MARKINGS["red"] not in built["objects"][-1]["object_refs"]
+
+
+@pytest.mark.parametrize(
+    "bad",
+    [
+        {"type": "indicator", "id": stix.object_id(NS, "indicator", "CASE-7", "ip-1")},  # already there
+        {"type": "identity", "id": stix.object_id(NS, "identity", "Northwind Ltd")},
+        {"type": "note"},
+        {"id": "note--1"},
+        {"type": "note", "id": ""},
+    ],
+)
+def test_an_extra_object_without_an_id_or_with_one_taken_is_refused(bad):
+    with pytest.raises(ValueError):
+        stix.bundle(export(), NOW, extra_objects=[bad])
+
+
+def test_two_extra_objects_with_one_id_are_refused():
+    obj = {"type": "note", "id": "note--4a3a0d2b-5b8e-4d55-9a5c-8f7b0e4c2a11"}
+    with pytest.raises(ValueError):
+        stix.bundle(export(), NOW, extra_objects=[obj, dict(obj)])
+
+
+# ---- 0.1.1: objects without an id ----------------------------------------------------------------
+
+
+def with_ids(objects: list) -> list:
+    """What Rowanholt passes stix.parse today (threat_intel/stix.py)."""
+    return [o for o in objects if isinstance(o, dict) and isinstance(o.get("id"), str) and o["id"]]
+
+
+@pytest.mark.parametrize("name", FIXTURES)
+def test_skipping_objects_without_an_id_is_rowanholts_filter(name):
+    bundle = bundle_of(name)
+    skipped = stix.parse(bundle, skip_without_id=True)
+    filtered = stix.parse({**bundle, "objects": with_ids(bundle["objects"])})
+    assert skipped == filtered
+    assert stix.parse(bundle) == stix.parse(bundle, skip_without_id=False)
+
+
+def test_shikaris_bundle_has_objects_without_ids_and_they_are_skipped():
+    bundle = bundle_of("shikari-bundle")
+    kept, skipped = stix.parse(bundle), stix.parse(bundle, skip_without_id=True)
+    assert skipped.object_count == len(with_ids(bundle["objects"])) < kept.object_count
+    assert all(i.object_id for i in skipped.indicators) and all(g.stix_id for g in skipped.groups)
+
+
+def test_a_relationship_without_an_id_links_nothing_when_skipped():
+    objects = [
+        {"type": "indicator", "id": "indicator--1", "pattern": "[domain-name:value = 'c2.example']"},
+        {"type": "intrusion-set", "id": "intrusion-set--1", "name": "APT34"},
+        {
+            "type": "relationship",
+            "relationship_type": "indicates",
+            "source_ref": "indicator--1",
+            "target_ref": "intrusion-set--1",
+        },  # fmt: skip
+        {"type": "indicator", "pattern": "[domain-name:value = 'no-id.example']"},
+        {"type": "indicator", "id": "", "pattern": "[domain-name:value = 'empty-id.example']"},
+        {"type": "indicator", "id": 7, "pattern": "[domain-name:value = 'number-id.example']"},
+    ]
+    kept = stix.parse(objects)
+    assert kept.indicators[0].groups == ("APT34",) and len(kept.indicators) == 4
+    skipped = stix.parse(objects, skip_without_id=True)
+    assert [(i.value, i.groups) for i in skipped.indicators] == [("c2.example", ())]
+    assert skipped.object_count == 2
+
+
+def test_the_rowanholt_rows_read_the_same_from_a_skipping_parse():
+    # Rowanholt's adapter still filters after parsing; with the bundle pre-skipped nothing changes
+    for name in FIXTURES:
+        bundle = bundle_of(name)
+        assert rowanholt_rows({**bundle, "objects": with_ids(bundle["objects"])}) == rowanholt_rows(bundle)
+
+
+# ---- 0.1.1: one table of digests -----------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    ("value", "kind", "stix_name", "misp_type"),
+    [
+        ("d41d8cd98f00b204e9800998ecf8427e", stix.Kind.FILE_HASH_MD5, "MD5", "md5"),
+        ("DA39A3EE5E6B4B0D3255BFEF95601890AFD80709", stix.Kind.FILE_HASH_SHA1, "SHA-1", "sha1"),
+        (
+            "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            stix.Kind.FILE_HASH_SHA256,
+            "SHA-256",
+            "sha256",
+        ),
+        (
+            "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce"
+            "47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e",
+            stix.Kind.FILE_HASH_SHA512,
+            "SHA-512",
+            "sha512",
+        ),
+    ],
+)
+def test_a_digest_is_named_by_its_length_for_stix_and_misp(value, kind, stix_name, misp_type):
+    found = stix.digest_of(f" {value}\n")
+    assert (found.kind, found.stix, found.misp, found.length) == (kind, stix_name, misp_type, len(value))
+    assert stix.HASH_NAMES[kind] == stix_name and stix.HASH_KINDS[stix_name.lower()] is kind
+    objects, pattern = stix.cyber_observables(kind, value)
+    assert objects[0]["hashes"] == {stix_name: value.lower()}
+
+
+@pytest.mark.parametrize("value", ["", "   ", "a" * 12, "a" * 56, "g" * 32, "a" * 31 + "-", "0x" + "a" * 30])
+def test_anything_else_is_no_digest(value):
+    assert stix.digest_of(value) is None
+
+
+def test_the_digest_table_is_shikaris_by_length():
+    assert {d.length: d.kind for d in stix.DIGESTS} == SHIKARI_HASHES

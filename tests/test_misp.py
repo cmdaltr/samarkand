@@ -324,3 +324,14 @@ def test_version_proves_the_url_and_key():
     )
     with pytest.raises(misp.MispProblem, match="HTTP 401"):
         misp.version("https://misp.example", "k", request=Instance((401, None)))
+
+
+def test_hash_types_come_from_the_one_digest_table():
+    from samarkand import stix
+
+    for digest in stix.DIGESTS:
+        assert misp.hash_type("A" * digest.length) == digest.misp
+        assert misp.ATTRIBUTE_TYPES[digest.kind][0] == digest.misp  # building by kind agrees
+        assert misp.KINDS[digest.misp] is digest.kind  # and reading back
+    assert misp.hash_type("  " + "b" * 40 + "\n") == "sha1"
+    assert [misp.hash_type(v) for v in ("", "   ", "g" * 32, "a" * 56)] == ["sha256"] * 4

@@ -12,8 +12,9 @@ it came from, so a product maps it to its own vocabulary; `Kind` is a neutral on
 Building gives deterministic ids (UUIDv5 under a namespace the product owns,
 and the spec's own SCO namespace over the ID contributing properties), UTC millisecond timestamps,
 and the OASIS TLP 2.0 marking definitions, carried by every object in `object_marking_refs`.
-`bundle` puts a simple bundle together from neutral parts; a product with more to say (incidents,
-notes, sightings) uses the object builders directly.
+`bundle` puts a simple bundle together from neutral parts, with the report last, and takes a
+product's own objects beside them (`extra_objects`); a product with more to say (incidents, notes,
+sightings) uses the object builders directly.
 """
 
 from __future__ import annotations
@@ -100,6 +101,37 @@ HASH_NAMES = {
     Kind.FILE_HASH_SHA256: "SHA-256",
     Kind.FILE_HASH_SHA512: "SHA-512",
 }
+
+
+@dataclass(frozen=True)
+class Digest:
+    """A hash algorithm as each format names it."""
+
+    kind: Kind
+    stix: str  # the key in a STIX `hashes` dictionary ("SHA-256")
+    misp: str  # the MISP attribute type ("sha256")
+    length: int  # hex digits
+
+
+# The one table naming a bare hex digest by its length, for STIX and MISP alike. A digest says nothing
+# else about its algorithm, so 64 digits is SHA-256, never SHA3-256 or BLAKE2s.
+DIGESTS = (
+    Digest(Kind.FILE_HASH_MD5, "MD5", "md5", 32),
+    Digest(Kind.FILE_HASH_SHA1, "SHA-1", "sha1", 40),
+    Digest(Kind.FILE_HASH_SHA256, "SHA-256", "sha256", 64),
+    Digest(Kind.FILE_HASH_SHA512, "SHA-512", "sha512", 128),
+)
+_DIGEST_LENGTHS = {d.length: d for d in DIGESTS}
+_HEX = frozenset("0123456789abcdefABCDEF")
+
+
+def digest_of(value: str) -> Digest | None:
+    """The algorithm a hex digest's length names (MD5, SHA-1, SHA-256 or SHA-512), or None when the
+    value isn't hex or no algorithm here has its length. Surrounding whitespace is ignored."""
+    v = (value or "").strip()
+    if not v or not set(v) <= _HEX:
+        return None
+    return _DIGEST_LENGTHS.get(len(v))
 
 
 class NotABundle(ValueError):
@@ -396,11 +428,14 @@ def _strings(value: Any) -> tuple[str, ...]:
     return tuple(v for v in value if isinstance(v, str)) if isinstance(value, list) else ()
 
 
-def parse(data: str | bytes | Mapping[str, Any] | Sequence[Any]) -> Parsed:
+def parse(data: str | bytes | Mapping[str, Any] | Sequence[Any], *, skip_without_id: bool = False) -> Parsed:
     """A STIX 2.1 bundle (or a bare list of objects, or their JSON) read into neutral parts.
 
     Objects sharing an id are one object, the last one read (a newer version), in the place the first
-    was. Objects without an id are kept, though nothing can refer to them. Raises NotABundle."""
+    was. Objects without an id are kept, though nothing can refer to them; with `skip_without_id`
+    they're left out before anything is read, as if the bundle never had them, so an id-less
+    relationship links nothing and an id-less group, report or indicator isn't counted (Rowanholt's
+    reading). Raises NotABundle."""
     data = _load(data)
     objects = data.get("objects") if isinstance(data, dict) else data
     if not isinstance(objects, list):
@@ -411,6 +446,8 @@ def parse(data: str | bytes | Mapping[str, Any] | Sequence[Any]) -> Parsed:
         if not isinstance(obj, dict):
             continue
         oid = obj.get("id")
+        if skip_without_id and not (isinstance(oid, str) and oid):
+            continue
         if isinstance(oid, str) and oid:
             if oid in place:
                 ordered[place[oid]] = obj
@@ -790,14 +827,32 @@ class Export:
     report_types: tuple[str, ...] = ("threat-report",)
     external_references: tuple[Mapping[str, Any], ...] = field(default_factory=tuple)
 
+    @property
+    def identity_ref(self) -> str:
+        """The id `bundle` gives the producer's identity, for a product's own objects' created_by_ref."""
+        return object_id(self.namespace, "identity", self.producer_key or self.producer)
 
-def bundle(export: Export, now: datetime) -> dict[str, Any]:
+    def attack_pattern_ref(self, technique_id: str) -> str:
+        """The id `bundle` gives a technique's attack-pattern, for a product's own relationships to it."""
+        return object_id(self.namespace, "attack-pattern", "mitre-attack", technique_id)
+
+
+def bundle(
+    export: Export, now: datetime, *, extra_objects: Iterable[Mapping[str, Any]] = ()
+) -> dict[str, Any]:
     """A bundle: the producer's identity, the TLP marking, an attack-pattern per technique, each
-    indicator with its cyber observables and `indicates` relationships, and a report referencing them
-    all. Ids are stable, so exporting again gives the same ids and a newer `modified`. Values STIX
-    can't express are left out, logged."""
+    indicator with its cyber observables and `indicates` relationships, the product's
+    `extra_objects`, and a report referencing them all. Ids are stable, so exporting again gives the
+    same ids and a newer `modified`. Values STIX can't express are left out, logged.
+
+    The objects come in that order and the report is always the last. `extra_objects` (a product's
+    own: Shikari's intrusion-set and x-shikari-detection objects) go in as given, after the standard
+    objects and before the report, and the report's `object_refs` names each of them but an identity
+    or marking definition, as it does the standard ones. Build them with `export.identity_ref`,
+    `export.attack_pattern_ref` and `common`; one whose id is already in the bundle raises
+    ValueError, since a bundle can't hold two objects with one id."""
     ns, tlp = export.namespace, tlp_name(export.tlp)
-    identity = object_id(ns, "identity", export.producer_key or export.producer)
+    identity = export.identity_ref
     objects: list[dict[str, Any]] = [
         identity_object(identity, export.producer, export.created, now),
         tlp_marking(tlp),
@@ -809,7 +864,7 @@ def bundle(export: Export, now: datetime) -> dict[str, Any]:
     def technique(tid: str, name: str = "", tactics: Iterable[str] = ()) -> str:
         if tid not in patterns:
             ap = attack_pattern_object(
-                object_id(ns, "attack-pattern", "mitre-attack", tid),
+                export.attack_pattern_ref(tid),
                 tid,
                 common(identity, export.created, now, tlp),
                 name,
@@ -855,6 +910,14 @@ def bundle(export: Export, now: datetime) -> dict[str, Any]:
                     technique(tid),
                 )
             )
+    held = {o["id"] for o in objects}
+    for obj in extra_objects:
+        if not isinstance(obj.get("id"), str) or not obj["id"] or not isinstance(obj.get("type"), str):
+            raise ValueError("Every extra object needs a type and an id.")
+        if obj["id"] in held:
+            raise ValueError(f"The bundle already has an object with the id {obj['id']}.")
+        held.add(obj["id"])
+        objects.append(dict(obj))
     refs = [o["id"] for o in objects if o["type"] not in ("identity", "marking-definition")]
     objects.append(
         {
