@@ -246,3 +246,44 @@ def test_a_fresh_key_signs_nothing_the_test_key_trusts():
     head = L.head_of(lic())
     with pytest.raises(L.LicenceProblem):
         L.parse(L.line_of(head, stranger.sign(head.encode())), product="ostraka", public_keys=(KEY,))
+
+
+@pytest.mark.parametrize("case", V["valid"], ids=lambda c: c["name"])
+def test_rules_parse_gives_a_licence_carrying_its_product(case):
+    product = case["payload"]["product"]
+    parsed = L.Rules(product, (KEY,), free_seats=4).parse(case["line"])
+    assert parsed.product == product and type(parsed) is L.Licence
+
+
+def test_rules_build_a_licence_for_their_product(test_keys):
+    rules = L.Rules("rowanholt", (KEY,), free_seats=4, name="Rowanholt")
+    built = rules.licence("lic_test", "Northwind Ltd", "pro", 10, date(2026, 11, 11), date(2027, 11, 30))
+    assert built == L.Licence(
+        "lic_test",
+        "Northwind Ltd",
+        L.Edition.PRO,
+        10,
+        date(2026, 11, 11),
+        date(2027, 11, 30),
+        product="rowanholt",
+    )
+    head = L.head_of(built)
+    assert rules.parse(L.line_of(head, test_keys["test"].sign(head.encode()))) == built
+    other = rules.licence("x", "y", L.Edition.SERVICES, None, date(2026, 1, 1), None, product="shikari")
+    assert other.product == "shikari"
+    extra = rules.licence("x", "y", "pro", 1, date(2026, 1, 1), None, email="a@b.example", features=("*",))
+    assert (extra.email, extra.features, extra.product) == ("a@b.example", ("*",), "rowanholt")
+
+
+def test_a_payload_without_its_product_is_still_refused(test_keys):
+    # Every payload names its product, and 0.1.0 refuses one that doesn't. Filling it in from the
+    # Rules would accept a line that was refused, so parse doesn't.
+    payload = L.payload_of(lic())
+    del payload["product"]
+    head = (
+        f"ostraka-licence-1.{base64.urlsafe_b64encode(L.canonical(payload).encode()).rstrip(b'=').decode()}"
+    )
+    line = L.line_of(head, test_keys["test"].sign(head.encode()))
+    with pytest.raises(L.LicenceProblem) as problem:
+        L.Rules("ostraka", (KEY,), free_seats=4).parse(line)
+    assert problem.value.code == L.UNREADABLE

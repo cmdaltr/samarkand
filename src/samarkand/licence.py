@@ -328,8 +328,25 @@ class Rules:
             log.warning("No public keys for %s: every licence will be refused.", self.product)
         object.__setattr__(self, "_keys", load_keys(self.public_keys))
 
+    def licence(
+        self,
+        licence_id: str,
+        licensee: str,
+        edition: Edition | str,
+        seats: int | None,
+        issued: date,
+        expires: date | None,
+        **optional: Any,
+    ) -> Licence:
+        """A Licence for this product: `Licence`'s own fields in its order, with `product` filled in
+        unless it's given (a test of another product's licence passes one). For an issuer's script
+        and tests, so a product needs no subclass of Licence to default its id."""
+        optional.setdefault("product", self.product)
+        return Licence(licence_id, licensee, Edition(edition), seats, issued, expires, **optional)
+
     def parse(self, text: str) -> Licence:
-        """See `parse`."""
+        """See `parse`. The licence carries the product's id in `product`: every payload names its
+        product, and a line whose payload doesn't is refused (UNREADABLE), as is one naming another."""
         return parse(text, product=self.product, public_keys=self._keys, name=self.name or None)
 
     def standing(self, licence: Licence | None, now: datetime | None = None) -> Standing:
