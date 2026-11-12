@@ -50,7 +50,9 @@ if standing.has(licence.AUTOMATION):
     ...
 ```
 
-An issuer (the product's `scripts/admin/` signer, never a server) signs `licence.head_of(lic)` with
+`RULES.licence(licence_id, licensee, edition, seats, issued, expires, **optional)` builds a Licence
+with the product filled in, for an issuer's script and tests; every parsed licence carries its
+product already. An issuer (the product's `scripts/admin/` signer, never a server) signs `licence.head_of(lic)` with
 the product's private key and joins the line with `licence.line_of(head, signature)`.
 
 ### Webhooks
@@ -79,9 +81,27 @@ parsed = stix.parse(bundle)              # or taxii.fetch_bundle(collection_url,
 for item in parsed.indicators:
     item.value, item.kind, item.stix_type, item.stix_path, item.groups, item.techniques
 
-bundle = stix.bundle(stix.Export(namespace=MY_NAMESPACE, key=case_id, producer="Northwind Ltd",
-                                 tlp="amber", created=declared, name=title, indicators=…, techniques=…), now)
+export = stix.Export(namespace=MY_NAMESPACE, key=case_id, producer="Northwind Ltd",
+                     tlp="amber", created=declared, name=title, indicators=…, techniques=…)
+bundle = stix.bundle(export, now)
+
+# a product's own objects, referenced by the report, which stays last
+props = stix.common(export.identity_ref, now, now, export.tlp)
+detection = {"type": "x-shikari-detection", "id": …, **props, …}
+uses = stix.relationship_object(…, props, "detects", detection["id"], export.attack_pattern_ref("T1059.001"))
+bundle = stix.bundle(export, now, extra_objects=[detection, uses])
+
+stix.parse(bundle, skip_without_id=True)  # leave out objects with no id, as Rowanholt reads
+stix.digest_of("e3b0c442…b855")          # Digest(kind=FILE_HASH_SHA256, stix="SHA-256", misp="sha256", length=64)
 ```
+
+`bundle()` gives the objects in a fixed order: the identity, the TLP marking, the attack-patterns,
+each indicator's observables, the indicator and its relationships, then `extra_objects` as given,
+and the report last, naming everything but the identity and marking definitions. One table,
+`stix.DIGESTS`, names a bare hex digest by its length for STIX and MISP alike (`misp.hash_type`
+reads it too).
+
+A `taxii.TaxiiProblem` is an `OSError`, so a handler for the one catches the other.
 
 A product with more to say than `bundle()` covers (Ostraka's incidents, notes and sightings) builds
 its own objects with `identity_object`, `attack_pattern_object`, `indicator_object`,
@@ -114,6 +134,11 @@ layer = navigator.build_layer(
 )
 ```
 
+A product whose ATT&CK data names no platforms, or that has none loaded, passes
+`navigator.PLATFORMS[navigator.ENTERPRISE]`: every platform ATT&CK `navigator.PLATFORMS_RELEASE`
+(20.1) names, per domain. There's no fallback ATT&CK version: the version a layer names should be
+the data the product holds.
+
 ## Adopting it in a product
 
 `tests/adapters.py` turns samarkand's neutral output into Rowanholt's ten-column rows and Shikari's
@@ -136,7 +161,7 @@ disagrees with a vector, the package is wrong, or the change is a wire-format ch
   allow or refuse.
 - `stix/`, `misp/` and `navigator/`: fixtures from the products' own tests, and what each product's
   code produces from them today (`expected-*.json`, `ostraka-*.json`, `rowanholt-layers.json`),
-  captured on 11 November 2026.
+  captured on 11 November 2026; `stix/shikari-export.json`, Shikari's export of a run, on 12 November.
 
 ## Development
 
@@ -154,12 +179,12 @@ CI (`.github/workflows/test.yml`) runs the same on Python 3.10, 3.11 and 3.12.
 Set the version in `pyproject.toml` and `src/samarkand/__init__.py`, commit, then tag and push:
 
 ```bash
-git tag v0.1.0 && git push origin v0.1.0
+git tag v0.1.1 && git push origin v0.1.1
 ```
 
 `.github/workflows/release.yml` checks the tag matches both versions, runs the tests, builds, and
 publishes to PyPI through Trusted Publishing: no token is stored anywhere. Products pin an exact
-version (`samarkand==0.1.0`).
+version (`samarkand==0.1.1`). What each version changed is in `CHANGELOG.md`.
 
 ## Licence
 

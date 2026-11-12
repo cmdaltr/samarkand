@@ -1,6 +1,6 @@
 [project]
 name = "samarkand"
-version = "0.1.0"
+version = "0.1.1"
 description = "The licence, webhook and threat-intelligence wire formats shared by Ostraka, Shikari and Rowanholt"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -30,7 +30,7 @@ build-backend = "hatchling.build"
 packages = ["src/samarkand"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/samarkand", "tests", "docs", "README.md", "LICENSE"]
+include = ["src/samarkand", "tests", "docs", "README.md", "CHANGELOG.md", "LICENSE"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
