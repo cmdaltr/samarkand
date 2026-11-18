@@ -3,6 +3,26 @@
 Products pin an exact version. Every version keeps the wire formats and the test vectors of the one
 before unless its entry says otherwise.
 
+## 0.2.0 (18 November 2026)
+
+Adds `samarkand.siem`. Everything 0.1.1 callers do behaves as it did.
+
+- `siem.Splunk`, `siem.Elastic` and `siem.Defender`: Shikari's query clients (`shikari/query/`),
+  moved here so Ostraka can run the same queries. Splunk runs SPL as a search job (token, or a
+  username and password with a session key renewed once when it expires), waits for it and pages its
+  results; Elasticsearch runs ES|QL through `/_query`, paging a query that returns events by
+  `@timestamp` and `_id`, and now filters on `@timestamp` between `start` and `end` when given;
+  Defender XDR runs KQL through Microsoft Graph's `runHuntingQuery` as an app registration with
+  ThreatHunting.Read.All. What each does is as it was in Shikari, except that a failure raises
+  `siem.SiemProblem` (an `OSError`) where Shikari returned `{"status": "error"}`.
+- `siem.SecOps`: Google SecOps UDM search through the Chronicle API (`…/instances/<customer
+  id>:udmSearch`), as a service account whose key signs its own token request (RS256, with
+  `cryptography`; no google-auth). New, built from Google's documentation, and not yet run against a
+  live tenant. Events come back flattened to dotted columns (`principal.hostname`).
+- Each client's work is a generator of requests (`siem.Call`) and pauses (`siem.Wait`), sent by
+  `siem.run` (standard library) or `siem.run_async` (httpx, `samarkand[async]`), so sync and async
+  can't drift apart. 429 and 503 are retried three times, honouring Retry-After.
+
 ## 0.1.1 (12 November 2026)
 
 Additions the products' switch-overs asked for. Everything 0.1.0 callers do behaves as it did.

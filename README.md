@@ -1,8 +1,8 @@
 # samarkand
 
 The wire formats and pure logic that Ostraka, Shikari and Rowanholt each used to carry their own copy
-of, in one package: the licence line, signed webhooks, STIX 2.1, TAXII 2.1, MISP events and ATT&CK
-Navigator layers.
+of, in one package: the licence line, signed webhooks, STIX 2.1, TAXII 2.1, MISP events, ATT&CK
+Navigator layers and read-only queries against a SIEM.
 
 The package knows no product. A product passes in what is its own: its id (`ostraka`), its public
 keys, its free seat number, its header prefix (`X-Ostraka`), its event names, its STIX namespace and
@@ -18,11 +18,12 @@ its data, already masked by its own rules.
 | `samarkand.taxii` | A TAXII 2.1 client: a collection's objects, following pagination, with optional Basic auth |
 | `samarkand.misp` | Reading and building MISP events, and pushing one (add, or update by uuid) |
 | `samarkand.navigator` | Navigator layers (format 4.5), with the ATT&CK version taken from the product's data |
+| `samarkand.siem` | Running a query read-only against Splunk (SPL), Elasticsearch (ES\|QL), Microsoft Defender XDR (KQL through Advanced Hunting) or Google SecOps (UDM search), sync or async, with the rows back and the SIEM's own words when it refuses |
 
 Out, and staying in each product: where a licence, a webhook or a delivery record is stored; routes
 and UI; seat counting; accepting the commercial terms; which events exist and what their data says;
 masking what leaves the product; which indicators count as confirmed; checking a feature at the point
-of use. There is no signing code for licences: issuing stays with each product's admin script and
+of use; where SIEM credentials are kept, and what of a query or its results is stored. There is no signing code for licences: issuing stays with each product's admin script and
 the licensor's private key.
 
 ## Installing
@@ -138,6 +139,24 @@ A product whose ATT&CK data names no platforms, or that has none loaded, passes
 `navigator.PLATFORMS[navigator.ENTERPRISE]`: every platform ATT&CK `navigator.PLATFORMS_RELEASE`
 (20.1) names, per domain. There's no fallback ATT&CK version: the version a layer names should be
 the data the product holds.
+
+### SIEM
+
+```python
+from samarkand import siem
+
+splunk = siem.Splunk("https://splunk.example:8089", token=token)
+result = splunk.query("index=main user=bob", start=since, end=until, max_rows=500)
+result.rows, result.columns, result.truncated, result.stats
+
+elastic = siem.Elastic(url, api_key=key)              # ES|QL; @timestamp filtered by start and end
+defender = siem.Defender(tenant_id, client_id, secret)  # KQL; the window is the query's own
+secops = siem.SecOps(service_account_json, project, customer_id, region="europe")
+await secops.query_async('principal.hostname = "ws-114"', start=since, end=until)
+```
+
+Every client has `query`, `query_async`, `check` and `check_async`; a refusal or an unreachable SIEM
+raises `siem.SiemProblem` (an `OSError`). Nothing is kept or logged.
 
 ## Adopting it in a product
 
