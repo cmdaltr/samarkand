@@ -149,7 +149,7 @@ splunk = siem.Splunk("https://splunk.example:8089", token=token)
 result = splunk.query("index=main user=bob", start=since, end=until, max_rows=500)
 result.rows, result.columns, result.truncated, result.stats
 
-elastic = siem.Elastic(url, api_key=key)              # ES|QL; @timestamp filtered by start and end
+elastic = siem.Elastic(url, api_key=key)  # ES|QL; @timestamp filtered by start and end
 defender = siem.Defender(tenant_id, client_id, secret)  # KQL; the window is the query's own
 secops = siem.SecOps(service_account_json, project, customer_id, region="europe")
 await secops.query_async('principal.hostname = "ws-114"', start=since, end=until)
