@@ -243,6 +243,11 @@ def webhook_vectors() -> dict:
                 "http://169.254.169.254/latest/meta-data",
                 "https://[fe80::1]/h",
                 "https://[::ffff:169.254.169.254]/h",
+                "https://2852039166/h",  # 169.254.169.254, as the resolver reads it
+                "https://0xa9fea9fe/h",
+                "https://0251.0376.0251.0376/h",
+                "https://169.254.43518/h",
+                "http://2852039166/h",
                 "https://user:pw@soar.example.org/h",
                 "https://user@soar.example.org/h",
                 "ftp://hooks.example.org",

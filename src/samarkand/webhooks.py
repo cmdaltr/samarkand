@@ -28,6 +28,7 @@ import hmac
 import ipaddress
 import json
 import logging
+import socket
 import time
 from collections.abc import Awaitable, Callable, Iterable, Mapping
 from dataclasses import asdict, dataclass, field
@@ -146,10 +147,15 @@ def parse(raw: bytes) -> Delivery:
 
 
 def _address(host: str) -> ipaddress.IPv4Address | ipaddress.IPv6Address | None:
+    """The address a host names, read as the resolver reads it: 2852039166, 0xa9fea9fe, 0251.0376.0251.0376
+    and 169.254.43518 are all 169.254.169.254, so a check on the dotted form alone lets them through."""
     try:
         address = ipaddress.ip_address(host)
     except ValueError:
-        return None
+        try:
+            return ipaddress.IPv4Address(socket.inet_aton(host))
+        except OSError:
+            return None
     if isinstance(address, ipaddress.IPv6Address) and address.ipv4_mapped:
         return address.ipv4_mapped
     return address

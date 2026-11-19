@@ -3,6 +3,17 @@
 Products pin an exact version. Every version keeps the wire formats and the test vectors of the one
 before unless its entry says otherwise.
 
+## 0.2.1 (19 November 2026)
+
+A fix from Ostraka's November security assessment. Everything 0.2.0 callers do behaves as it did,
+except that the URLs below are now refused.
+
+- `webhooks.url_problem` reads an IPv4 address as the resolver does, so a link-local address
+  written as one number, in hex or octal, or in the short form (`https://2852039166/`,
+  `https://0xa9fea9fe/`, `https://0251.0376.0251.0376/`, `https://169.254.43518/`, all
+  169.254.169.254) is refused like the dotted form. The send-time check uses the same rule, so a URL
+  saved before is refused when it's next sent. The cases are in the webhook vectors.
+
 ## 0.2.0 (18 November 2026)
 
 Adds `samarkand.siem`. Everything 0.1.1 callers do behaves as it did.
