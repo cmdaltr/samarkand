@@ -2,4 +2,4 @@
 Pure logic only: each product keeps its own storage, routes, UI and rules, and passes in
 what's its own (its id, public keys, event names and header prefix)."""
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"

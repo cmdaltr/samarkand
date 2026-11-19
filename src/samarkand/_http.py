@@ -2,7 +2,8 @@
 
 Redirects are never followed unless asked: a webhook, a TAXII server or a MISP instance is the
 address an admin registered, not wherever it points next. TLS is verified unless the caller turns it
-off for that one request.
+off for that one request. Every request connects through `netguard`: never to a link-local address,
+however the host is written or whatever it resolves to, and to the address that was checked.
 """
 
 from __future__ import annotations
@@ -12,6 +13,8 @@ import urllib.error
 import urllib.request
 from collections.abc import Mapping
 from dataclasses import dataclass, field
+
+from samarkand import netguard
 
 
 @dataclass(frozen=True)
@@ -44,7 +47,10 @@ def request(
     if not verify:
         context.check_hostname = False
         context.verify_mode = ssl.CERT_NONE
-    handlers: list[urllib.request.BaseHandler] = [urllib.request.HTTPSHandler(context=context)]
+    handlers: list[urllib.request.BaseHandler] = [
+        netguard.HTTPHandler(),
+        netguard.HTTPSHandler(context=context),
+    ]
     if not follow_redirects:
         handlers.append(_NoRedirects())
     opener = urllib.request.build_opener(*handlers)
@@ -73,6 +79,8 @@ async def request_async(
         import httpx
     except ImportError as exc:  # pragma: no cover - only without the extra
         raise RuntimeError("The async sender needs httpx: install samarkand[async].") from exc
-    async with httpx.AsyncClient(timeout=timeout, verify=verify, follow_redirects=follow_redirects) as client:
+    transport = netguard.AsyncTransport(verify=verify)
+    client = httpx.AsyncClient(timeout=timeout, transport=transport, follow_redirects=follow_redirects)
+    async with client:
         answer = await client.request(method, url, content=body, headers=dict(headers or {}))
         return Response(answer.status_code, answer.content, {k.lower(): v for k, v in answer.headers.items()})

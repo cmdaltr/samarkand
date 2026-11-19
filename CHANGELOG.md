@@ -3,6 +3,20 @@
 Products pin an exact version. Every version keeps the wire formats and the test vectors of the one
 before unless its entry says otherwise.
 
+## 0.2.2 (19 November 2026)
+
+The second fix from Ostraka's November security assessment. Wire formats are as they were; a request
+that would reach a link-local address now fails instead.
+
+- `samarkand.netguard`: a host is resolved once, refused (`netguard.Refused`, an `OSError`) if it is or
+  resolves to a link-local address, and connected to at the address that was checked, with the name
+  kept for the Host header, SNI and the certificate check. A name that resolves to 169.254.169.254, or
+  to a public address when checked and a link-local one a moment later, no longer gets through.
+- Every request samarkand sends (webhooks, MISP, TAXII, the SIEM clients) connects through it, sync
+  and async. A refused async request raises `httpx.ConnectError`, as an unreachable one does.
+- `netguard.AsyncTransport` does the same for a product's own httpx clients: pass it as `transport=`
+  (with `verify` on the transport, since a client given one ignores its own).
+
 ## 0.2.1 (19 November 2026)
 
 A fix from Ostraka's November security assessment. Everything 0.2.0 callers do behaves as it did,
