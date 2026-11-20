@@ -8,7 +8,8 @@ pauses between them (`Wait`), and `run` or `run_async` sends them, so the sync a
 drift apart and the tests drive the generators with scripted answers.
 
 A query returns a `Result`: the rows as dicts, whether more were there than were read, and what the SIEM
-said about the run. Nothing is kept here: what to store, show or log is the product's. Anything that
+said about the run. Nothing is kept here but a client's sign-in token (Defender XDR, SecOps), reused
+until shortly before it expires: what to store, show or log is the product's. Anything that
 goes wrong (bad syntax, expired credentials, a busy or unreachable SIEM) raises `SiemProblem` with
 the SIEM's own words where it gave some.
 
@@ -34,7 +35,7 @@ import base64
 import json
 import re
 import time
-from collections.abc import Generator, Mapping
+from collections.abc import Callable, Generator, Mapping
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import Any
@@ -46,6 +47,7 @@ TIMEOUT = 300.0  # seconds a whole query may take
 REQUEST_TIMEOUT = 60.0
 RETRIES = 3  # for 429 and 503: a SIEM's search concurrency and rate limits
 MAX_ROWS = 1000
+TOKEN_MARGIN = 300.0  # seconds before an OAuth token expires that a new one is signed in for
 
 
 class SiemProblem(OSError):
@@ -233,6 +235,37 @@ class _Client:
     async def check_async(self) -> Result:
         """`check` with httpx."""
         return await run_async(self._check(), verify=self.verify)
+
+
+class _Bearer(_Client):
+    """A client signing in for an OAuth token, kept and reused until shortly before it expires."""
+
+    _bearer: tuple[str, float] | None = None
+
+    def _sign_in(self) -> Steps:
+        """The token endpoint's answer, as JSON (access_token, expires_in)."""
+        raise NotImplementedError
+
+    def _token(self) -> Steps:
+        if self._bearer and time.monotonic() < self._bearer[1]:
+            return self._bearer[0]
+        data = yield from self._sign_in()
+        try:
+            lifetime = float(data.get("expires_in") or 3600)
+        except (TypeError, ValueError):
+            lifetime = 3600.0
+        self._bearer = (data["access_token"], time.monotonic() + max(lifetime - TOKEN_MARGIN, 0.0))
+        return self._bearer[0]
+
+    def _authorised(self, call: Callable[[str], Call]) -> Steps:
+        """`call` sent with the token. A kept token refused (revoked, or the clock off) is dropped and the
+        call sent once more with a new one."""
+        kept = self._bearer is not None and time.monotonic() < self._bearer[1]
+        answer = yield from _send(call((yield from self._token())))
+        if answer.status == 401 and kept:
+            self._bearer = None
+            answer = yield from _send(call((yield from self._token())))
+        return answer
 
 
 # ---- Splunk -------------------------------------------------------------------------------------------
@@ -509,7 +542,7 @@ class Elastic(_Client):
 GRAPH_HUNTING = "https://graph.microsoft.com/v1.0/security/runHuntingQuery"
 
 
-class Defender(_Client):
+class Defender(_Bearer):
     """KQL through Advanced Hunting (Microsoft Graph runHuntingQuery), as an app registration in the
     tenant with the ThreatHunting.Read.All application permission (admin consented)."""
 
@@ -519,7 +552,7 @@ class Defender(_Client):
         self.tenant_id, self.client_id, self.client_secret = tenant_id, client_id, client_secret
         self.verify = verify
 
-    def _token(self) -> Steps:
+    def _sign_in(self) -> Steps:
         answer = yield from _send(
             Call(
                 "POST",
@@ -540,12 +573,11 @@ class Defender(_Client):
             reason = data.get("error_description", "").split("\r\n")[0] if isinstance(data, dict) else ""
             reason = reason or f"HTTP {answer.status}"
             raise SiemProblem(f"Microsoft Entra refused the app registration: {reason}")
-        return _json(answer)["access_token"]
+        return _json(answer)
 
     def _query(self, query: str, start: Any, end: Any, max_rows: int, timeout: float) -> Steps:
-        bearer = yield from self._token()
-        answer = yield from _send(
-            Call(
+        answer = yield from self._authorised(
+            lambda bearer: Call(
                 "POST",
                 GRAPH_HUNTING,
                 json.dumps({"Query": query}).encode(),
@@ -621,7 +653,7 @@ def flatten(value: Mapping[str, Any], prefix: str = "") -> dict[str, Any]:
     return out
 
 
-class SecOps(_Client):
+class SecOps(_Bearer):
     """UDM search through the Chronicle API (…/instances/<customer id>:udmSearch), as a service account
     with the Chronicle API Viewer role. `region` is the instance's (us, europe, europe-west2…); `project`
     is the Google Cloud project bound to it; `instance` is the SecOps customer ID."""
@@ -648,7 +680,7 @@ class SecOps(_Client):
             f"/locations/{quote(self.region)}/instances/{quote(self.instance)}:udmSearch"
         )
 
-    def _token(self) -> Steps:
+    def _sign_in(self) -> Steps:
         assertion = service_account_assertion(self.account, GOOGLE_SCOPE, datetime.now(timezone.utc))
         answer = yield from _send(
             Call(
@@ -662,20 +694,19 @@ class SecOps(_Client):
             data = _json(answer) if answer.body else {}
             reason = data.get("error_description", "") if isinstance(data, dict) else ""
             raise SiemProblem(f"Google refused the service account: {reason or f'HTTP {answer.status}'}")
-        return _json(answer)["access_token"]
+        return _json(answer)
 
     def _query(self, query: str, start: Any, end: Any, max_rows: int, timeout: float) -> Steps:
         finish = end if isinstance(end, datetime) else datetime.now(timezone.utc)
         begin = start if isinstance(start, datetime) else finish - timedelta(hours=24)
-        bearer = yield from self._token()
         params = {
             "query": query.strip(),
             "timeRange.startTime": _iso(begin),
             "timeRange.endTime": _iso(finish),
             "limit": max_rows or 10000,
         }
-        answer = yield from _send(
-            Call(
+        answer = yield from self._authorised(
+            lambda bearer: Call(
                 "GET",
                 f"{self.endpoint}?{urlencode(params)}",
                 headers={"Authorization": f"Bearer {bearer}"},

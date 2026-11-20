@@ -3,6 +3,18 @@
 Products pin an exact version. Every version keeps the wire formats and the test vectors of the one
 before unless its entry says otherwise.
 
+## 0.2.3 (20 November 2026)
+
+Two fixes from running Shikari's query clients. Wire formats are as they were.
+
+- `samarkand.netguard` tries each address a name resolves to, in the resolver's order, until one
+  answers; 0.2.2 tried only the first. `localhost` on macOS resolves to ::1 first, so a SIEM listening
+  only on 127.0.0.1 was unreachable. Every address is still checked before any is tried: one link-local
+  address refuses the name. `netguard.addresses` gives the list; `netguard.resolve` is its first.
+- `siem.Defender` and `siem.SecOps` keep their OAuth token and reuse it until five minutes before it
+  expires (`expires_in`, else an hour), instead of signing in for every query. A kept token that's
+  refused with 401 is dropped and the request sent once more with a new one.
+
 ## 0.2.2 (19 November 2026)
 
 The second fix from Ostraka's November security assessment. Wire formats are as they were; a request

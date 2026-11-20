@@ -18,7 +18,7 @@ its data, already masked by its own rules.
 | `samarkand.taxii` | A TAXII 2.1 client: a collection's objects, following pagination, with optional Basic auth |
 | `samarkand.misp` | Reading and building MISP events, and pushing one (add, or update by uuid) |
 | `samarkand.navigator` | Navigator layers (format 4.5), with the ATT&CK version taken from the product's data |
-| `samarkand.netguard` | Never connecting to a link-local address (cloud metadata), however the host is written or whatever its name resolves to, and connecting to the address that was checked: every request samarkand sends goes through it, and `AsyncTransport` puts it under a product's own httpx client |
+| `samarkand.netguard` | Never connecting to a link-local address (cloud metadata), however the host is written or whatever its name resolves to, and connecting only to the addresses that were checked, each in turn until one answers: every request samarkand sends goes through it, and `AsyncTransport` puts it under a product's own httpx client |
 | `samarkand.siem` | Running a query read-only against Splunk (SPL), Elasticsearch (ES\|QL), Microsoft Defender XDR (KQL through Advanced Hunting) or Google SecOps (UDM search), sync or async, with the rows back and the SIEM's own words when it refuses |
 
 Out, and staying in each product: where a licence, a webhook or a delivery record is stored; routes

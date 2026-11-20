@@ -249,6 +249,48 @@ def test_defender_names_the_permission_it_needs():
         drive(client._query("x", None, None, 1, 60), [ok({"access_token": "b"}), ok({}, 403)])
 
 
+def hunted(rows: int = 1) -> Response:
+    return ok({"schema": [], "results": [{"n": i} for i in range(rows)]})
+
+
+def test_defender_keeps_its_token_between_queries():
+    client = siem.Defender("t", "c", "s")
+    _, first, _ = drive(client._query("a", None, None, 1, 60), [ok({"access_token": "b1"}), hunted()])
+    _, second, _ = drive(client._query("b", None, None, 1, 60), [hunted()])
+    assert len(first) == 2 and [c.url for c in second] == [siem.GRAPH_HUNTING]
+    assert second[0].headers["Authorization"] == "Bearer b1"
+
+
+def test_defender_signs_in_again_once_the_token_is_near_expiry(monkeypatch):
+    clock = [1000.0]
+    monkeypatch.setattr(siem.time, "monotonic", lambda: clock[0])
+    client = siem.Defender("t", "c", "s")
+    drive(client._query("a", None, None, 1, 60), [ok({"access_token": "b1", "expires_in": 3599}), hunted()])
+    clock[0] += 3599 - siem.TOKEN_MARGIN - 1
+    _, calls, _ = drive(client._query("b", None, None, 1, 60), [hunted()])
+    assert len(calls) == 1
+    clock[0] += 2
+    _, calls, _ = drive(client._query("c", None, None, 1, 60), [ok({"access_token": "b2"}), hunted()])
+    assert calls[1].headers["Authorization"] == "Bearer b2"
+
+
+def test_defender_drops_a_kept_token_that_is_refused_and_tries_once_more():
+    client = siem.Defender("t", "c", "s")
+    drive(client._query("a", None, None, 1, 60), [ok({"access_token": "b1"}), hunted()])
+    result, calls, _ = drive(
+        client._query("b", None, None, 1, 60), [ok({}, 401), ok({"access_token": "b2"}), hunted()]
+    )
+    assert [c.headers.get("Authorization") for c in calls] == ["Bearer b1", None, "Bearer b2"]
+    assert result.rows == [{"n": 0}]
+
+
+def test_defender_reports_a_new_token_refused_without_retrying():
+    client = siem.Defender("t", "c", "s")
+    with pytest.raises(siem.SiemProblem, match="ThreatHunting.Read.All"):
+        drive(client._query("a", None, None, 1, 60), [ok({"access_token": "b1"}), ok({}, 401)])
+    assert client._bearer is not None  # kept: Entra issued it; the permission is what's missing
+
+
 # ---- Google SecOps ------------------------------------------------------------------------------------
 
 
@@ -361,3 +403,11 @@ def test_the_async_runner_sends_the_same_requests(monkeypatch):
     monkeypatch.setattr(siem._http, "request_async", answer)
     result = asyncio.run(siem.Elastic("https://es:9200", api_key="k").check_async())
     assert seen == ["POST https://es:9200/_query?format=json"] and result.rows == [{"ok": 1}]
+
+
+def test_secops_keeps_its_token_between_queries(account):
+    info, _ = account
+    client = siem.SecOps(json.dumps(info), "p", "i")
+    drive(client._query("q", None, NOW, 1, 60), [ok({"access_token": "g-1"}), ok({"events": []})])
+    _, calls, _ = drive(client._query("q", None, NOW, 1, 60), [ok({"events": []})])
+    assert len(calls) == 1 and calls[0].headers["Authorization"] == "Bearer g-1"

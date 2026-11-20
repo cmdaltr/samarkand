@@ -118,3 +118,42 @@ def test_the_async_sender_refuses_a_name_resolving_to_link_local(names):
     table["rebind.attacker.example"] = ["169.254.169.254"]
     with pytest.raises(httpx.ConnectError, match="link-local"):
         asyncio.run(_http.request_async("GET", "http://rebind.attacker.example/latest/meta-data", timeout=2))
+
+
+def test_every_address_a_name_resolves_to_is_kept_in_order(names):
+    table, _ = names
+    table["siem.example.test"] = ["10.0.0.5", "10.0.0.6", "10.0.0.5"]
+    assert netguard.addresses("siem.example.test", 8089) == ["10.0.0.5", "10.0.0.6"]
+
+
+def test_the_sync_sender_tries_the_next_address_when_one_refuses(names, server):
+    table, _ = names
+    # localhost on macOS: ::1 first, the server listening on 127.0.0.1 only
+    table["both.example.test"] = ["::1", "127.0.0.1"]
+    answer = _http.request("GET", f"http://both.example.test:{server}/", timeout=2)
+    assert answer.status == 200 and answer.body == f"both.example.test:{server}".encode()
+
+
+def test_the_async_sender_tries_the_next_address_when_one_refuses(names, server):
+    table, _ = names
+    table["both.example.test"] = ["::1", "127.0.0.1"]
+    answer = asyncio.run(_http.request_async("GET", f"http://both.example.test:{server}/", timeout=2))
+    assert answer.status == 200 and answer.body == f"both.example.test:{server}".encode()
+
+
+def test_every_address_failing_is_still_a_connect_error(names):
+    import httpx
+
+    table, _ = names
+    table["down.example.test"] = ["::1", "127.0.0.1"]
+    port = _free_port()
+    with pytest.raises(OSError):
+        _http.request("GET", f"http://down.example.test:{port}/", timeout=2)
+    with pytest.raises(httpx.ConnectError):
+        asyncio.run(_http.request_async("GET", f"http://down.example.test:{port}/", timeout=2))
+
+
+def _free_port() -> int:
+    with socket.socket() as probe:
+        probe.bind(("127.0.0.1", 0))
+        return probe.getsockname()[1]
